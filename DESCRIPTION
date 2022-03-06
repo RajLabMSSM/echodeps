@@ -18,6 +18,12 @@ Depends: R (>= 4.1)
 biocViews:
     Genetics, FunctionalGenomics, SystemsBiology
 Imports:
+    dplyr,
+    data.table,
+    igraph,
+    pkgnet,
+    visNetwork
+Suggests:
     echolocatoR,
     echodata,
     echotabix,
@@ -29,12 +35,6 @@ Imports:
     echofinemap,
     downloadR,
     echoverseTemplate,
-    dplyr,
-    data.table,
-    igraph,
-    pkgnet,
-    visNetwork
-Suggests:
     markdown,
     rmarkdown,
     magick,
