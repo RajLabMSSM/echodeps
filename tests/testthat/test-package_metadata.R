@@ -8,7 +8,7 @@ test_that("package_metadata works", {
         sort(echodeps:::echoverse_modules())
     )
     testthat::expect_true(
-        data.table::key(meta)=="Package"
+        "Package" %in% colnames(meta)
     )
     testthat::expect_equal(
         meta["echolocatoR",]$URL[[1]],

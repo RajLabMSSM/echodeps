@@ -18,6 +18,17 @@ Depends: R (>= 4.1)
 biocViews:
     Genetics, FunctionalGenomics, SystemsBiology
 Imports:
+    echolocatoR,
+    echodata,
+    echotabix,
+    echoannot,
+    echoconda,
+    echoLD,
+    echoplot,
+    catalogueR,
+    echofinemap,
+    downloadR,
+    echoverseTemplate,
     dplyr,
     data.table,
     igraph,
@@ -36,6 +47,18 @@ Suggests:
     hexSticker,
     utils,
     methods
+Remotes:
+    github::RajLabMSSM/echodata,
+    github::RajLabMSSM/echotabix,
+    github::RajLabMSSM/downloadR,
+    github::RajLabMSSM/echoannot,
+    github::RajLabMSSM/echoconda,
+    github::RajLabMSSM/echoLD,
+    github::RajLabMSSM/echoplot,
+    github::RajLabMSSM/catalogueR,
+    github::RajLabMSSM/echofinemap,
+    github::RajLabMSSM/echoverseTemplate,
+    github::RajLabMSSM/echolocatoR
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 License: GPL-3
