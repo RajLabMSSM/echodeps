@@ -1,25 +1,25 @@
-<img src='https://github.com/RajLabMSSM/echoverseTemplate/raw/master/inst/hex/hex.png' height='300'><br><br>
-[![](https://img.shields.io/badge/devel%20version-0.99.0-black.svg)](https://github.com/RajLabMSSM/echoverseTemplate)
+<img src='https://github.com/RajLabMSSM/echodeps/raw/master/inst/hex/hex.png' height='300'><br><br>
+[![](https://img.shields.io/badge/devel%20version-0.99.0-black.svg)](https://github.com/RajLabMSSM/echodeps)
 [![R build
-status](https://github.com/RajLabMSSM/echoverseTemplate/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RajLabMSSM/echoverseTemplate/actions)
-[![](https://img.shields.io/github/last-commit/RajLabMSSM/echoverseTemplate.svg)](https://github.com/RajLabMSSM/echoverseTemplate/commits/master)
-[![](https://codecov.io/gh/RajLabMSSM/echoverseTemplate/branch/master/graph/badge.svg)](https://codecov.io/gh/RajLabMSSM/echoverseTemplate)
+status](https://github.com/RajLabMSSM/echodeps/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RajLabMSSM/echodeps/actions)
+[![](https://img.shields.io/github/last-commit/RajLabMSSM/echodeps.svg)](https://github.com/RajLabMSSM/echodeps/commits/master)
+[![](https://codecov.io/gh/RajLabMSSM/echodeps/branch/master/graph/badge.svg)](https://codecov.io/gh/RajLabMSSM/echodeps)
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 <h5>
 Author: <i>Brian M. Schilder</i>
 </h5>
 <h5>
-README updated: <i>Mar-04-2022</i>
+README updated: <i>Mar-05-2022</i>
 </h5>
 
-## `echoverseTemplate`: echoversePackageDescription.
+## `echodeps`: Create package dependency graphs.
 
 This R package is part of the *echoverse* suite that supports
 [`echolocatoR`](https://github.com/RajLabMSSM/echolocatoR): an automated
 genomic fine-mapping pipeline.
 
-If you use `echoverseTemplate`, please cite:
+If you use `echodeps`, please cite:
 
 > Brian M Schilder, Jack Humphrey, Towfique Raj (2021) echolocatoR: an
 > automated end-to-end statistical and functional genomic fine-mapping
@@ -31,15 +31,15 @@ If you use `echoverseTemplate`, please cite:
 ``` r
 if(!require("remotes")) install.packages("remotes")
 
-remotes::install_github("RajLabMSSM/echoverseTemplate")
-library(echoverseTemplate)
+remotes::install_github("RajLabMSSM/echodeps")
+library(echodeps)
 ```
 
 ## Documentation
 
-### [Website](https://rajlabmssm.github.io/echoverseTemplate)
+### [Website](https://rajlabmssm.github.io/echodeps)
 
-### [Getting started](https://rajlabmssm.github.io/echoverseTemplate/articles/echoverseTemplate)
+### [Getting started](https://rajlabmssm.github.io/echodeps/articles/echodeps)
 
 <hr>
 
