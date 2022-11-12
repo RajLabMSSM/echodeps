@@ -1,7 +1,7 @@
 Package: echodeps
 Type: Package
 Title: echoverse module: Create package dependency graphs
-Version: 0.99.0
+Version: 0.99.2
 Authors@R: 
     c(person(given = "Brian",
            family = "Schilder",
@@ -13,12 +13,11 @@ Description: echoverse module: Create package dependency graphs.
 URL: https://github.com/RajLabMSSM/echodeps
 BugReports: https://github.com/RajLabMSSM/echodeps/issues
 Encoding: UTF-8
-LazyData: true
 Depends: R (>= 4.1)
 biocViews:
     Genetics, FunctionalGenomics, SystemsBiology
 Imports:
-    dplyr,
+    methods,
     data.table,
     igraph,
     pkgnet,
@@ -34,6 +33,7 @@ Suggests:
     catalogueR,
     echofinemap,
     downloadR,
+    echogithub,
     echoverseTemplate,
     markdown,
     rmarkdown,
@@ -46,8 +46,9 @@ Suggests:
     badger,
     hexSticker,
     utils,
-    methods
+    dplyr
 Remotes:
+    github::RajLabMSSM/echogithub,
     github::RajLabMSSM/echodata,
     github::RajLabMSSM/echotabix,
     github::RajLabMSSM/downloadR,
@@ -59,7 +60,7 @@ Remotes:
     github::RajLabMSSM/echofinemap,
     github::RajLabMSSM/echoverseTemplate,
     github::RajLabMSSM/echolocatoR
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 License: GPL-3
 Config/testthat/edition: 3

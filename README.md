@@ -1,16 +1,15 @@
 <img src='https://github.com/RajLabMSSM/echodeps/raw/master/inst/hex/hex.png' height='300'><br><br>
-[![](https://img.shields.io/badge/devel%20version-0.99.0-black.svg)](https://github.com/RajLabMSSM/echodeps)
 [![R build
-status](https://github.com/RajLabMSSM/echodeps/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/RajLabMSSM/echodeps/actions)
+status](https://github.com/RajLabMSSM/echodeps/workflows/rworkflows/badge.svg)](https://github.com/RajLabMSSM/echodeps/actions)
 [![](https://img.shields.io/github/last-commit/RajLabMSSM/echodeps.svg)](https://github.com/RajLabMSSM/echodeps/commits/master)
-[![](https://codecov.io/gh/RajLabMSSM/echodeps/branch/master/graph/badge.svg)](https://codecov.io/gh/RajLabMSSM/echodeps)
+[![](https://app.codecov.io/gh/RajLabMSSM/echodeps/branch/master/graph/badge.svg)](https://app.codecov.io/gh/RajLabMSSM/echodeps)
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
+<h4>
+Authors: <i>Brian Schilder</i>
+</h4>
 <h5>
-Author: <i>Brian M. Schilder</i>
-</h5>
-<h5>
-README updated: <i>Mar-05-2022</i>
+README updated: <i>Nov-12-2022</i>
 </h5>
 
 ## `echodeps`: Create package dependency graphs.

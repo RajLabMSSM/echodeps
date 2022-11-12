@@ -26,11 +26,10 @@
 #' @inheritParams visNetwork::visSave
 #' @inheritParams visNetwork::visOptions
 #' @export
-#' @importFrom dplyr %>%
 #' @examples
 #' \dontrun{
 #' #### not run simply bc it causes weird errors with devtools::check() ####
-#' res <- echodeps::dep_graph()
+#' res <- echodeps::dep_graph("echoverse")
 #' }
 dep_graph <- function(pkg_name = "echolocatoR",
                       deps = NULL,
@@ -51,10 +50,8 @@ dep_graph <- function(pkg_name = "echolocatoR",
                       width = "100%",
                       height = "500px",
                       verbose = TRUE){
-  requireNamespace("pkgnet")
-  requireNamespace("igraph")
-  # echodeps:::source_all(packages = "dplyr");
-  # args2vars(fn = dep_graph);
+  # echoverseTemplate:::source_all();
+  # echoverseTemplate:::args2vars(fn = dep_graph);
 
   if(length(pkg_name)>1) {
     messager("Warning:: pkg_name has length >1. Only using the first package:",

@@ -9,7 +9,6 @@
 #' @inheritParams visNetwork::visNodes
 #' @inheritParams visNetwork::visSave
 #' @inheritParams visNetwork::visOptions
-#' @importFrom dplyr %>%
 #' @export
 dep_graph_plot <- function(subgraph,
                            pkg_name,
@@ -30,8 +29,8 @@ dep_graph_plot <- function(subgraph,
   requireNamespace("visNetwork")
   requireNamespace("igraph")
 
-  vis <- visNetwork::visIgraph(subgraph) %>%
-    layout(pkg_name = pkg_name) %>%
+  vis <- visNetwork::visIgraph(subgraph) |>
+    layout(pkg_name = pkg_name) |>
     visNetwork::visNodes(
       shape = tolower(shape[1]),
       borderWidth = 2,
@@ -52,7 +51,7 @@ dep_graph_plot <- function(subgraph,
       shadow = list(enabled = TRUE,
                     size = 40,
                     color="#537bcb") # "#03b1f0"
-    ) %>%
+    ) |>
     visNetwork::visEdges(
       arrows = 'from',
       shadow = list(enabled=TRUE,color="#686ea6"),
@@ -61,13 +60,13 @@ dep_graph_plot <- function(subgraph,
       color = list(color = "#56ffff",
                    opacity=.75,
                    highlight = "#686ea6"),
-    ) %>%
+    ) |>
     visNetwork::visOptions(nodesIdSelection = list(enabled = FALSE,
                                                    selected=pkg_name,
                                                    main="select package"),
                            highlightNearest=TRUE,
                            width = width,
-                           height = height) %>%
+                           height = height) |>
     visNetwork::visInteraction(
       tooltipStyle =paste(
         "position: fixed",

@@ -2,6 +2,9 @@ dep_graph_create <- function(pkg_name,
                              deps,
                              verbose = TRUE){
 
+    requireNamespace("pkgnet")
+    requireNamespace("igraph")
+
     messager("Generating `pkgnet` package report.",v=verbose)
     report <- pkgnet::CreatePackageReport(pkg_name = pkg_name)
     g <- report$DependencyReporter$pkg_graph$igraph

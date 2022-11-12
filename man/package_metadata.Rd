@@ -19,6 +19,9 @@ If a field is missing for a given package, will fill with \code{NULL}.}
 
 \item{verbose}{Print messages.}
 }
+\value{
+\link[data.table]{data.table} of metadata.
+}
 \description{
 Gather metadata from the DESCRIPTION file of each R package and construct a
 \link[data.table]{data.table}.

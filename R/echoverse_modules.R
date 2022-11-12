@@ -9,6 +9,7 @@ echoverse_modules <- function(){
                    "catalogueR",
                    "echofinemap",
                    "downloadR",
+                   "echogithub",
                    "echoverseTemplate",
                    "echodeps")
     return(echoverse)

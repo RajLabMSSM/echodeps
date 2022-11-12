@@ -9,8 +9,9 @@
 #' @param fields DESCRIPTION file fields.
 #' If a field is missing for a given package, will fill with \code{NULL}.
 #' @param verbose Print messages.
+#' @returns \link[data.table]{data.table} of metadata.
+#'
 #' @export
-#' @importFrom dplyr %>%
 #' @examples
 #' meta <- echodeps::package_metadata()
 package_metadata <- function(pkgs = "echoverse",
@@ -56,11 +57,11 @@ package_metadata <- function(pkgs = "echoverse",
               d = d,
               field = x,
               split = if(x %in% c("Title","Description")) "______" else ",")
-          }) %>% `names<-`(fields)
+          }) |> `names<-`(fields)
         )
       )
     }, error = function(e){warning(e); NULL})
-  }) %>% data.table::rbindlist()
+  }) |> data.table::rbindlist()
   meta$Package <- unlist(meta$Package)
   #### Set index ####
   ## ----------------------##
