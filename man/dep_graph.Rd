@@ -7,13 +7,16 @@
 dep_graph(
   pkg_name = "echolocatoR",
   deps = NULL,
+  method = c("pkgnet", "github"),
   shape = c("image", "hexagon"),
   image = file.path("https://github.com/RajLabMSSM",
     "Fine_Mapping/blob/master/echolocatoR", "images/bat_silhouette.png?raw=true"),
   layout = echodeps::layout_star,
+  colors = echodeps::construct_colors(),
+  node_size = NULL,
+  font_face = "Tahoma",
   show_plot = list(r = FALSE, browser = TRUE),
-  save_path = file.path(tempdir(), paste0(pkg_name, ".dep_graph.html")),
-  background = "#25355c",
+  save_path = file.path(tempdir(), paste0(basename(pkg_name), ".dep_graph.html")),
   width = "100\%",
   height = "500px",
   verbose = TRUE
@@ -24,6 +27,16 @@ dep_graph(
 
 \item{deps}{A subset of of the main package's (\code{pkg_name} )
 dependencies to include in the plot visualization.}
+
+\item{method}{Method to create the dependency graph with:
+\itemize{
+\item{"pkgnet"}{Extracts all the R packages that the target R package depends
+on using \link[pkgnet]{CreatePackageReport}}
+\item{"github"}{Extracts all the GitHub repositories that depend on the
+respective GitHub repository of the target R package
+using \link[echogithub]{github_dependents}}
+}
+If more than one option is provided, only the first is used.}
 
 \item{shape}{: String. Default to 'ellipse'. The shape defines what the node looks like. There are two types of nodes. One type has the label inside of it and the other type has the label underneath it. The types with the label inside of it are: ellipse, circle, database, box, text. The ones with the label outside of it are: image, circularImage, diamond, dot, star, triangle, triangleDown, hexagon, square and icon.}
 
@@ -39,6 +52,20 @@ to specify plot layout. The function must take two arguments:
 "graph" and "pkg_name".
 See \code{echodeps::layout_star} for an example.}
 
+\item{colors}{Colors for each of the graph plot elements.
+Can use the \link[echodeps]{construct_colors} function to help create this.}
+
+\item{node_size}{Strategy for setting node sizes. Can be one of:
+\itemize{
+\item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
+\item{<numeric> : }{User-provided node size.
+Sets all nodes to the same size.}
+\item{<character> : }{User-provided metadata column name.
+Scales node size to a vector of numeric values in the node metadata.}
+}}
+
+\item{font_face}{Font to use for plot text.}
+
 \item{show_plot}{A named list with two items:
 \itemize{
 \item{r}{Whether to show the dependency graph in R/Rstudio
@@ -49,8 +76,6 @@ See \code{echodeps::layout_star} for an example.}
 
 \item{save_path}{Path to save the plot to, as an interactive,
 self-container HTML file.}
-
-\item{background}{: Text string giving the html background color of the widget. Defaults to white.}
 
 \item{width}{: String. Default to "100\%". The width of the network in pixels or as a percentage.}
 
@@ -67,6 +92,8 @@ plots only packages within the
 \examples{
 \dontrun{
 #### not run simply bc it causes weird errors with devtools::check() ####
-res <- echodeps::dep_graph()
+res <- echodeps::dep_graph("echoverse")
 }
+res <- echodeps::dep_graph(pkg_name = "rworkflows",
+                           method = "github")
 }

@@ -1,12 +1,18 @@
-dep_graph_add_meta <- function(g2,
-                               pkg_name,
-                               meta){
+dep_graph_add_meta_pkgnet <- function(g2,
+                                      pkg_name,
+                                      meta,
+                                      node_size=NULL){
   requireNamespace("data.table")
   requireNamespace("igraph")
 
-  igraph::V(g2)$URL <- meta[names(igraph::V(g2)),]$URL
-  igraph::V(g2)$Version <- meta[names(igraph::V(g2)),]$Version
-  igraph::V(g2)$value <- ifelse(names(igraph::V(g2))==pkg_name, 40, 30)
+  g2 <- set_metadata(g2=g2,
+                     meta=meta,
+                     cols=c("URL","Version"))
+  #### Set node size ####
+  g2 <- set_node_size(g2 = g2,
+                      meta = meta,
+                      pkg_name = pkg_name,
+                      node_size = node_size)
   igraph::V(g2)$group <- ifelse(igraph::V(g2)==pkg_name, 'y', 'n')
   igraph::V(g2)$outputs <- igraph::degree(g2, mode = "out")
   igraph::V(g2)$inputs <- igraph::degree(g2, mode = "in")

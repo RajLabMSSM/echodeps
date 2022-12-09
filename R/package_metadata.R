@@ -26,6 +26,11 @@ package_metadata <- function(pkgs = "echoverse",
                                          "Remotes",
                                          "SystemRequirements"),
                               verbose = TRUE){
+    # echoverseTemplate:::source_all()
+    # echoverseTemplate:::args2vars(package_metadata)
+
+  requireNamespace("echogithub")
+
   #### echoverse modules ####
   echoverse <- echoverse_modules()
   #### Handle "echoverse" ####
@@ -45,10 +50,13 @@ package_metadata <- function(pkgs = "echoverse",
   meta <- lapply(pkgs, function(pkg){
     tryCatch({
       messager("-",pkg, v=verbose)
-      d <- utils::packageDescription(pkg)
-      if(!methods::is(d,"data.frame") && is.na(d)) {
-        return(NULL)
-      }
+      d <- echogithub::description_find(repo = pkg,
+                                        verbose = verbose)
+      if(is.null(d)) return(NULL)
+      # d <- utils::packageDescription(pkg)
+      # if(!methods::is(d,"data.frame") && is.na(d)) {
+      #   return(NULL)
+      # }
       data.table::data.table(
         t(
           lapply(fields,function(x){
@@ -82,6 +90,6 @@ package_metadata <- function(pkgs = "echoverse",
   ### Only this works
   meta <- data.frame(meta)
   rownames(meta) <- meta$Package
-  ## ----------------------##
+  #### Return ####
   return(meta)
 }

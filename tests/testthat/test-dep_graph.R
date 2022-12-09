@@ -5,7 +5,8 @@ test_that("dep_graph works", {
         testthat::expect_true(methods::is(res$metadata,"data.frame"))
         testthat::expect_true(methods::is(res$graph,"igraph"))
         testthat::expect_true(methods::is(res$subgraph,"igraph"))
-        testthat::expect_true(methods::is(res$pkgnet_report,"PackageReport"))
+        testthat::expect_true(methods::is(res$report,"PackageReport") |
+                              methods::is(res$report,"data.table"))
         testthat::expect_equal(res$pkg_name,pkg_name)
     }
 
@@ -24,4 +25,11 @@ test_that("dep_graph works", {
                                     )
                                 })
     run_tests(res = res2, pkg_name = "dplyr")
+
+
+    #### Using "github" ####
+    res3 <- echodeps::dep_graph(pkg_name = "rworkflows",
+                                method = "github",
+                                shape = "hexagon")
+    run_tests(res = res3, pkg_name = "rworkflows")
 })

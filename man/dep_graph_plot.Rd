@@ -5,23 +5,25 @@
 \title{Dependency graph plot}
 \usage{
 dep_graph_plot(
-  subgraph,
+  g,
   pkg_name,
   shape = c("image", "hexagon"),
   image = file.path("https://github.com/RajLabMSSM",
     "Fine_Mapping/blob/master/echolocatoR", "images/bat_silhouette.png?raw=true"),
   layout = echodeps::layout_star,
+  hide_tooltip = TRUE,
   show_plot = list(r = TRUE, browser = TRUE),
-  save_path = NULL,
+  save_path = file.path(tempdir(), paste0(basename(pkg_name), ".dep_graph.html")),
   width = NULL,
   height = NULL,
-  background = "white",
+  colors = echodeps::construct_colors(),
+  font_face = "Tahoma",
   verbose = TRUE
 )
 }
 \arguments{
-\item{subgraph}{A subgraph of class \link[igraph]{igraph}.
-\emph{Warning:} Large subgraphs may be slow to interact with.}
+\item{g}{A graph of class \link[igraph]{igraph}.
+\emph{Warning:} Large graphs may be slow to interact with.}
 
 \item{pkg_name}{Package to search dependencies for.}
 
@@ -39,6 +41,9 @@ to specify plot layout. The function must take two arguments:
 "graph" and "pkg_name".
 See \code{echodeps::layout_star} for an example.}
 
+\item{hide_tooltip}{Hide the tooltips by default, and only show them when
+the cursor is hovering over the respective node.}
+
 \item{show_plot}{A named list with two items:
 \itemize{
 \item{r}{Whether to show the dependency graph in R/Rstudio
@@ -54,11 +59,20 @@ self-container HTML file.}
 
 \item{height}{: String. Default to "100\%". The height of the network in pixels or as a percentage.}
 
-\item{background}{: Text string giving the html background color of the widget. Defaults to white.}
+\item{colors}{Colors for each of the graph plot elements.
+Can use the \link[echodeps]{construct_colors} function to help create this.}
+
+\item{font_face}{Font to use for plot text.}
 
 \item{verbose}{Print messages.}
 }
 \description{
 Plot a dependency graph between a set of R packages
 as an interactive network.
+}
+\examples{
+dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+                            method = "github")
+vis <- dep_graph_plot(g = dgc_out$subgraph,
+                      pkg_name = dgc_out$pkg_name)
 }

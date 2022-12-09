@@ -1,33 +1,34 @@
+#' Create a dependency graph
+#'
+#' Create a dependency graph.
+#' @inheritParams dep_graph
+#' @export
+#' @examples
+#' dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+#'                             method = "github")
 dep_graph_create <- function(pkg_name,
-                             deps,
+                             deps = NULL,
+                             method = c("pkgnet","github"),
+                             node_size = NULL,
                              verbose = TRUE){
 
-    requireNamespace("pkgnet")
-    requireNamespace("igraph")
-
-    messager("Generating `pkgnet` package report.",v=verbose)
-    report <- pkgnet::CreatePackageReport(pkg_name = pkg_name)
-    g <- report$DependencyReporter$pkg_graph$igraph
-    #### Subset deps ####
-    messager("Constructing dependency subgraph.",v=verbose)
-    deps <- subset_deps(pkg_name = pkg_name,
-                        deps = deps,
-                        report = report)
-    ### Gather metadata ####
-    # report$DependencyReporter$nodes
-    meta <- package_metadata(pkgs = c(pkg_name,deps))
-    all_pkgs <- unlist(meta$Package)
-    all_pkgs <- all_pkgs[all_pkgs %in% names(igraph::V(g))]
-    g2 <- igraph::induced_subgraph(
-        graph =  g,
-        vids = igraph::V(g)[all_pkgs]
-    )
-    #### Add graph metadata ####
-    g2 <- dep_graph_add_meta(g2 = g2,
-                             pkg_name = pkg_name,
-                             meta = meta)
-    return(list(graph=g,
-                subgraph=g2,
-                report=report,
-                metadata=meta))
+    method <- tolower(method)[1]
+    #### Select method ####
+    if(method=="pkgnet"){
+        dgc_out <- dep_graph_create_pkgnet(pkg_name=pkg_name,
+                                           deps=deps,
+                                           node_size=node_size,
+                                           verbose=verbose)
+   } else if(method=="github"){
+       dgc_out <- dep_graph_create_github(pkg_name=pkg_name,
+                                          deps=deps,
+                                          node_size=node_size,
+                                          verbose=verbose)
+   } else {
+        stopper("method must be one of:",
+                paste("\n -",
+                      shQuote(eval(formals(dep_graph_create)$method)),
+                      collapse = ""))
+   }
+    return(dgc_out)
 }

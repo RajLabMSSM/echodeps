@@ -3,14 +3,21 @@
 #' Plot a dependency graph between a set of R packages
 #' as an interactive network.
 #'
-#' @param subgraph A subgraph of class \link[igraph]{igraph}.
-#' \emph{Warning:} Large subgraphs may be slow to interact with.
+#' @param g A graph of class \link[igraph]{igraph}.
+#' \emph{Warning:} Large graphs may be slow to interact with.
+#' @param hide_tooltip Hide the tooltips by default, and only show them when
+#' the cursor is hovering over the respective node.
 #' @inheritParams dep_graph
 #' @inheritParams visNetwork::visNodes
 #' @inheritParams visNetwork::visSave
 #' @inheritParams visNetwork::visOptions
 #' @export
-dep_graph_plot <- function(subgraph,
+#' @examples
+#' dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+#'                             method = "github")
+#' vis <- dep_graph_plot(g = dgc_out$subgraph,
+#'                       pkg_name = dgc_out$pkg_name)
+dep_graph_plot <- function(g,
                            pkg_name,
                            shape = c("image", "hexagon"),
                            image =
@@ -19,70 +26,85 @@ dep_graph_plot <- function(subgraph,
                                "Fine_Mapping/blob/master/echolocatoR",
                                "images/bat_silhouette.png?raw=true"),
                            layout = echodeps::layout_star,
+                           hide_tooltip = TRUE,
                            show_plot = list(r=TRUE,
                                             browser=TRUE),
-                           save_path = NULL,
+                           save_path = file.path(
+                               tempdir(), paste0(basename(pkg_name),
+                                                 ".dep_graph.html")),
                            width = NULL,
                            height = NULL,
-                           background = "white",
+                           colors = echodeps::construct_colors(),
+                           font_face = "Tahoma",
                            verbose = TRUE){
   requireNamespace("visNetwork")
   requireNamespace("igraph")
 
-  vis <- visNetwork::visIgraph(subgraph) |>
+  #### Check args ####
+  if(is.null(save_path) && isTRUE(show_plot$browser)){
+      messager("WARNING: save_path must be a valid file path",
+               "to use show_plot with browser=TRUE.",v=verbose)
+  }
+  shape <- tolower(shape[1])
+  #### Make plot ####
+  vis <- visNetwork::visIgraph(g) |>
     layout(pkg_name = pkg_name) |>
     visNetwork::visNodes(
-      shape = tolower(shape[1]),
+      shape = shape,
       borderWidth = 2,
       image = image,
       labelHighlightBold = TRUE,
       color = list(
-        background =  "#25355c",
-        border = "#41c6c8",
-        highlight = "#56ffff",
-        hover=list(background="blue",
-                   border="#41c6c8")
+        background = colors$node_background,
+        border = colors$node_border,
+        highlight = colors$node_highlight,
+        hover=list(background=colors$node_hover_background,
+                   border=colors$node_hover_border)
       ),
-      font = list(color="white",
+      font = list(color=colors$node_font,
                   size=20,
-                  face="Tahoma",
+                  face=font_face,
                   strokeWidth=10,
-                  strokeColor="rgba(103,115,141,.5)"),
+                  strokeColor=colors$node_font_stroke),
       shadow = list(enabled = TRUE,
                     size = 40,
-                    color="#537bcb") # "#03b1f0"
+                    color=colors$node_shadow) # "#03b1f0"
     ) |>
     visNetwork::visEdges(
       arrows = 'from',
-      shadow = list(enabled=TRUE,color="#686ea6"),
-      smooth = TRUE,dashes =FALSE,
-      width = 2,
-      color = list(color = "#56ffff",
+      color = list(color = colors$edge_color,
                    opacity=.75,
-                   highlight = "#686ea6"),
+                   highlight = colors$edge_highlight),
+      shadow = list(enabled = TRUE,
+                    color = colors$edge_shadow),
+      smooth = TRUE,
+      dashes =FALSE,
+      width = 2
     ) |>
     visNetwork::visOptions(nodesIdSelection = list(enabled = FALSE,
-                                                   selected=pkg_name,
-                                                   main="select package"),
-                           highlightNearest=TRUE,
+                                                   selected = pkg_name,
+                                                   main = "select package"),
+                           highlightNearest = TRUE,
                            width = width,
                            height = height) |>
     visNetwork::visInteraction(
       tooltipStyle =paste(
-        "position: fixed",
-        "visibility: hidden",
-        "font-family: Tahoma",
-        "background-color: rgba(0,0,0,.5)",
-        "box-shadow: 2px 2px 2px 3px rgba(247, 247, 247, 0.5)",
-        "color: #fff",
+        paste("position:",if(isTRUE(hide_tooltip))"fixed"else"relative"),
+        paste("visibility:",if(isTRUE(hide_tooltip))"hidden"else"visible"),
+        paste("font-family:",font_face),
+        paste("color:",colors$tooltip_font),
+        paste("background-color:",colors$tooltip_background),
+        paste("box-shadow: 2px 2px 2px 3px",colors$tooltip_box_shadow),
         "padding: 10px",
         sep=";"))
   #### Save ####
   if(!is.null(save_path)) {
+    save_path <- gsub("\n","",save_path)
+    dir.create(dirname(save_path),showWarnings = FALSE, recursive = TRUE)
     message("Saving dependency graph plot ==> ",save_path)
     visNetwork::visSave(graph = vis,
                         file = save_path,
-                        background = background,
+                        background = colors$save_background,
                         selfcontained = TRUE)
   }
   #### Show ####
@@ -90,7 +112,9 @@ dep_graph_plot <- function(subgraph,
     messager("Showing plot in R.",v=verbose)
     print(vis)
   }
-  if(isTRUE(show_plot$browser) && file.exists(save_path)){
+  if(isTRUE(show_plot$browser) &&
+     !is.null(save_path) &&
+     file.exists(save_path)){
     messager("Showing plot in browser.",v=verbose)
     utils::browseURL(save_path)
   }
