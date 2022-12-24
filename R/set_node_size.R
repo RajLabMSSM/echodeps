@@ -1,15 +1,15 @@
-set_node_size <- function(g2,
+set_node_size <- function(g,
                           meta,
-                          pkg_name,
+                          pkg,
                           node_size){
     if(is.character(node_size)){
         node_size <- node_size[node_size %in% names(meta)]
     }
     if(length(node_size)==0){
-        igraph::V(g2)$value <- ifelse(names(igraph::V(g2))==pkg_name, 40, 30)
+        igraph::V(g)$value <- ifelse(names(igraph::V(g))==pkg, 40, 30)
     } else {
-        igraph::vertex_attr(g2,name = "value") <-
-            meta[names(igraph::V(g2)),][[node_size]]
+        igraph::vertex_attr(g,name = "value") <-
+            meta[names(igraph::V(g)),][[node_size]]
     }
-    return(g2)
+    return(g)
 }

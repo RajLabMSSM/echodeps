@@ -4,9 +4,9 @@
 #' as an interactive network. By default,
 #' plots only packages within the
 #'  \href{https://github.com/topics/echoverse}{\code{echoverse}}.
-#' @param pkg_name Package to search dependencies for.
-#' @param deps A subset of of the main package's (\code{pkg_name} )
-#' dependencies to include in the plot visualization.
+#' @param pkg Package to search dependencies for.
+#' @param exclude A subset of of the main package's (\code{pkg} )
+#' dependencies to exclude in the graph.
 #' @param method Method to create the dependency graph with:
 #' \itemize{
 #' \item{"pkgnet"}{Extracts all the R packages that the target R package depends
@@ -26,8 +26,10 @@
 #' @param layout \pkg{visNetwork} layout function
 #' (e.g. \link[visNetwork]{visLayout} or \link[visNetwork]{visIgraphLayout}
 #' to specify plot layout. The function must take two arguments:
-#' "graph" and "pkg_name".
+#' "graph" and "pkg".
 #' See \code{echodeps::layout_star} for an example.
+#' Alternatively, you may set \code{layout=NULL} to use the
+#' default force-directed \link[visNetwork]{visIgraph} layout, "layout_nicely".
 #' @param colors Colors for each of the graph plot elements.
 #' Can use the \link[echodeps]{construct_colors} function to help create this.
 #' @param font_face Font to use for plot text.
@@ -39,23 +41,36 @@
 #' \item{<character> : }{User-provided metadata column name.
 #' Scales node size to a vector of numeric values in the node metadata.}
 #' }
+#' @param reverse
+#' \itemize{
+#' \item{\code{FALSE} (default)}{Create a forward dependency graph
+#' (packages that \code{pkg} depends on,
+#' and the packages that they depend on).}
+#' \item{\code{TRUE}}{Create a reverse dependency graph
+#'  (packages that depend on \code{pkg},
+#'  and the packages that depend on them).}
+#' }
+#' @param sep Character separator between owner and repo, to label each node.
+#' @param use_basename Only use the repo name to label each node.
 #' @param save_path Path to save the plot to, as an interactive,
 #'  self-container HTML file.
 #' @param verbose Print messages.
 #' @inheritParams visNetwork::visNodes
 #' @inheritParams visNetwork::visSave
 #' @inheritParams visNetwork::visOptions
+#' @inheritParams devtools::revdep
 #' @export
 #' @importFrom data.table :=
 #' @examples
 #' \dontrun{
 #' #### not run simply bc it causes weird errors with devtools::check() ####
-#' res <- echodeps::dep_graph("echoverse")
+#' res <- dep_graph(pkg = "echoverse")
 #' }
-#' res <- echodeps::dep_graph(pkg_name = "rworkflows",
-#'                            method = "github")
-dep_graph <- function(pkg_name = "echolocatoR",
-                      deps = NULL,
+#' res <- dep_graph(pkg = "rworkflows",
+#'                  method = "github",
+#'                  use_basename = T, reverse=T)
+dep_graph <- function(pkg = "echolocatoR",
+                      exclude = NULL,
                       method = c("pkgnet","github"),
                       shape = c("image", "hexagon"),
                       image =
@@ -71,31 +86,52 @@ dep_graph <- function(pkg_name = "echolocatoR",
                       show_plot = list(r=FALSE,
                                        browser=TRUE),
                       save_path = file.path(
-                        tempdir(), paste0(basename(pkg_name),
+                        tempdir(), paste0(basename(pkg),
                                           ".dep_graph.html")),
                       width = "100%",
                       height = "500px",
+                      reverse = FALSE,
+                      recursive = FALSE,
+                      use_basename = TRUE,
+                      sep = "/\n",
                       verbose = TRUE){
   # echoverseTemplate:::source_all();
   # echoverseTemplate:::args2vars(fn = dep_graph);
 
-  if(length(pkg_name)>1) {
-    messager("Warning:: pkg_name has length >1. Only using the first package:",
-             pkg_name[1],v=verbose)
+  if(length(pkg)>1) {
+    messager("Warning:: pkg has length >1.",
+             "Only using the first package:",
+             pkg[1],v=verbose)
   }
-  pkg_name <- pkg_name[1]
+  pkg <- pkg[1]
   #### Gather dependency graph data ####
-  dgc_out <- dep_graph_create(pkg_name = pkg_name,
-                              deps = deps,
-                              method = method,
-                              node_size = node_size,
-                              verbose = verbose)
+  if(isTRUE(reverse)){
+      dgc_out <- revdep_graph_create(pkg = pkg,
+                                     method_seed = method,
+                                     # method = method,
+                                     recursive = recursive,
+                                     exclude = exclude,
+                                     node_size = node_size,
+                                     use_basename = use_basename,
+                                     sep = sep,
+                                     verbose = verbose)
+      g <- dgc_out$graph
+  } else {
+      dgc_out <- dep_graph_create(pkg = pkg,
+                                  exclude = exclude,
+                                  method = method,
+                                  node_size = node_size,
+                                  use_basename = use_basename,
+                                  sep = sep,
+                                  verbose = verbose)
+      g <- dgc_out$subgraph
+  }
   #### Create interactive plot ####
-  vis <- dep_graph_plot(g = dgc_out$subgraph,
+  vis <- dep_graph_plot(g = g,
                         shape = shape,
                         image = image,
                         layout = layout,
-                        pkg_name = dgc_out$pkg_name,
+                        pkg = dgc_out$pkg,
                         show_plot = show_plot,
                         save_path = save_path,
                         width = width,
@@ -108,6 +144,6 @@ dep_graph <- function(pkg_name = "echolocatoR",
               graph=dgc_out$graph,
               subgraph=dgc_out$subgraph,
               report=dgc_out$report,
-              pkg_name=pkg_name,
+              pkg=pkg,
               save_path=save_path))
 }

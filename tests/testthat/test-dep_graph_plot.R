@@ -1,7 +1,7 @@
 test_that("dep_graph_plot works", {
 
     #### Create graph ####
-    dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+    dgc_out <- dep_graph_create(pkg = "rworkflows",
                                 method = "github",
                                 node_size = "clones_uniques")
     #### Subset graph ####
@@ -12,7 +12,6 @@ test_that("dep_graph_plot works", {
     #### Plot graph ####
     vis <- dep_graph_plot(g = g2,
                           shape = "hexagon",
-                          pkg_name = dgc_out$pkg_name,
-                          save_path = )
+                          pkg = dgc_out$pkg)
     testthat::expect_true(methods::is(vis,"visNetwork"))
 })

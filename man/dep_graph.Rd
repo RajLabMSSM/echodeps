@@ -5,8 +5,8 @@
 \title{Dependency graph plot}
 \usage{
 dep_graph(
-  pkg_name = "echolocatoR",
-  deps = NULL,
+  pkg = "echolocatoR",
+  exclude = NULL,
   method = c("pkgnet", "github"),
   shape = c("image", "hexagon"),
   image = file.path("https://github.com/RajLabMSSM",
@@ -16,17 +16,21 @@ dep_graph(
   node_size = NULL,
   font_face = "Tahoma",
   show_plot = list(r = FALSE, browser = TRUE),
-  save_path = file.path(tempdir(), paste0(basename(pkg_name), ".dep_graph.html")),
+  save_path = file.path(tempdir(), paste0(basename(pkg), ".dep_graph.html")),
   width = "100\%",
   height = "500px",
+  reverse = FALSE,
+  recursive = FALSE,
+  use_basename = TRUE,
+  sep = "/\\n",
   verbose = TRUE
 )
 }
 \arguments{
-\item{pkg_name}{Package to search dependencies for.}
+\item{pkg}{Package to search dependencies for.}
 
-\item{deps}{A subset of of the main package's (\code{pkg_name} )
-dependencies to include in the plot visualization.}
+\item{exclude}{A subset of of the main package's (\code{pkg} )
+dependencies to exclude in the graph.}
 
 \item{method}{Method to create the dependency graph with:
 \itemize{
@@ -49,8 +53,10 @@ If more than one option is provided, only the first is used.}
 \item{layout}{\pkg{visNetwork} layout function
 (e.g. \link[visNetwork]{visLayout} or \link[visNetwork]{visIgraphLayout}
 to specify plot layout. The function must take two arguments:
-"graph" and "pkg_name".
-See \code{echodeps::layout_star} for an example.}
+"graph" and "pkg".
+See \code{echodeps::layout_star} for an example.
+Alternatively, you may set \code{layout=NULL} to use the
+default force-directed \link[visNetwork]{visIgraph} layout, "layout_nicely".}
 
 \item{colors}{Colors for each of the graph plot elements.
 Can use the \link[echodeps]{construct_colors} function to help create this.}
@@ -81,6 +87,21 @@ self-container HTML file.}
 
 \item{height}{: String. Default to "100\%". The height of the network in pixels or as a percentage.}
 
+\item{reverse}{\itemize{
+\item{\code{FALSE} (default)}{Create a forward dependency graph
+(packages that \code{pkg} depends on,
+and the packages that they depend on).}
+\item{\code{TRUE}}{Create a reverse dependency graph
+ (packages that depend on \code{pkg},
+ and the packages that depend on them).}
+}}
+
+\item{recursive}{If \code{TRUE} look for full set of recursive dependencies.}
+
+\item{use_basename}{Only use the repo name to label each node.}
+
+\item{sep}{Character separator between owner and repo, to label each node.}
+
 \item{verbose}{Print messages.}
 }
 \description{
@@ -92,8 +113,9 @@ plots only packages within the
 \examples{
 \dontrun{
 #### not run simply bc it causes weird errors with devtools::check() ####
-res <- echodeps::dep_graph("echoverse")
+res <- dep_graph(pkg = "echoverse")
 }
-res <- echodeps::dep_graph(pkg_name = "rworkflows",
-                           method = "github")
+res <- dep_graph(pkg = "rworkflows",
+                 method = "github",
+                 use_basename = T, reverse=T)
 }

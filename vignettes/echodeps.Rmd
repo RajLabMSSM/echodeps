@@ -69,7 +69,7 @@ to explore them further.
 ## echolocatoR
 
 ```{r graph1}
-res_echoverse <- echodeps::dep_graph(pkg_name = "echolocatoR",
+res_echoverse <- echodeps::dep_graph(pkg = "echolocatoR",
                                      ## Setting show_plot for vignette purposes
                                      show_plot = list(r=TRUE,
                                                       browser=FALSE))
@@ -79,9 +79,9 @@ res_echoverse <- echodeps::dep_graph(pkg_name = "echolocatoR",
 <!-- Cannot run more than one dep_graph example per vignette because rmarkdown will get confused and think the same code chunk names are being used multiple times. I think this happens because pkgnet::CreatePackageReport is rendering an rmarkdown within another rmarkdown (this vignette) -->
 
 ```{r graph2, eval=FALSE}
-res <- echodeps::dep_graph(pkg_name = "dplyr",
+res <- echodeps::dep_graph(pkg = "dplyr",
                            shape = "hexagon", 
-                           layout = function(graph, pkg_name){
+                           layout = function(graph, pkg){
                                visNetwork::visIgraphLayout(
                                    graph = graph,
                                    layout = "layout_nicely"

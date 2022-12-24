@@ -6,14 +6,14 @@
 \usage{
 dep_graph_plot(
   g,
-  pkg_name,
+  pkg,
   shape = c("image", "hexagon"),
   image = file.path("https://github.com/RajLabMSSM",
     "Fine_Mapping/blob/master/echolocatoR", "images/bat_silhouette.png?raw=true"),
   layout = echodeps::layout_star,
   hide_tooltip = TRUE,
   show_plot = list(r = TRUE, browser = TRUE),
-  save_path = file.path(tempdir(), paste0(basename(pkg_name), ".dep_graph.html")),
+  save_path = file.path(tempdir(), paste0(basename(pkg), ".dep_graph.html")),
   width = NULL,
   height = NULL,
   colors = echodeps::construct_colors(),
@@ -25,7 +25,7 @@ dep_graph_plot(
 \item{g}{A graph of class \link[igraph]{igraph}.
 \emph{Warning:} Large graphs may be slow to interact with.}
 
-\item{pkg_name}{Package to search dependencies for.}
+\item{pkg}{Package to search dependencies for.}
 
 \item{shape}{: String. Default to 'ellipse'. The shape defines what the node looks like. There are two types of nodes. One type has the label inside of it and the other type has the label underneath it. The types with the label inside of it are: ellipse, circle, database, box, text. The ones with the label outside of it are: image, circularImage, diamond, dot, star, triangle, triangleDown, hexagon, square and icon.}
 
@@ -38,8 +38,10 @@ dep_graph_plot(
 \item{layout}{\pkg{visNetwork} layout function
 (e.g. \link[visNetwork]{visLayout} or \link[visNetwork]{visIgraphLayout}
 to specify plot layout. The function must take two arguments:
-"graph" and "pkg_name".
-See \code{echodeps::layout_star} for an example.}
+"graph" and "pkg".
+See \code{echodeps::layout_star} for an example.
+Alternatively, you may set \code{layout=NULL} to use the
+default force-directed \link[visNetwork]{visIgraph} layout, "layout_nicely".}
 
 \item{hide_tooltip}{Hide the tooltips by default, and only show them when
 the cursor is hovering over the respective node.}
@@ -71,8 +73,8 @@ Plot a dependency graph between a set of R packages
 as an interactive network.
 }
 \examples{
-dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+dgc_out <- dep_graph_create(pkg = "rworkflows",
                             method = "github")
 vis <- dep_graph_plot(g = dgc_out$subgraph,
-                      pkg_name = dgc_out$pkg_name)
+                      pkg = dgc_out$pkg)
 }

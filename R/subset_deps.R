@@ -1,14 +1,18 @@
-subset_deps <- function(pkg_name,
-                        deps,
+subset_deps <- function(pkg,
+                        include=NULL,
+                        exclude=NULL,
                         report){
-    if(tolower(pkg_name)=="echolocator" && is.null(deps)){
-        deps <- "echoverse"
-    } else if(is.null(deps)){
-        deps_all <- report$DependencyReporter$nodes$node
-        deps <- deps_all[deps_all!=pkg_name]
+
+    deps <- report$DependencyReporter$nodes$node
+    #### Include ####
+    if(is.null(include)){
+        deps <- deps[deps!=pkg]
     } else {
-        deps_all <- report$DependencyReporter$nodes$node
-        deps <- deps_all[(deps_all!=pkg_name) & (deps_all %in% deps)]
+        deps <- deps[(deps!=pkg) & (deps %in% include)]
+    }
+    #### Exclude ####
+    if(!is.null(exclude)){
+        deps <- deps[!deps %in% exclude]
     }
     return(deps)
 }

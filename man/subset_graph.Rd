@@ -25,7 +25,7 @@ Automatically omits \code{include}/\code{exclude} nodes
  that don't exist in the graph to avoid errors.
 }
 \examples{
-dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+dgc_out <- dep_graph_create(pkg = "rworkflows",
                             method = "github",
                             node_size = "clones_uniques")
 g <- dgc_out$graph

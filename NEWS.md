@@ -1,3 +1,19 @@
+# echodeps 0.99.4
+
+## New features
+
+* Change `deps=` arg to exclude.
+* New features for finding *reverse* dependencies:
+    - `dep_graph(reverse=TRUE)`
+    - `revdep_*` functions
+* Change all args: `pkg_name` --> `pkg` (more terse)
+* New function:
+    - `merge_graphs`
+
+## Bug fixes
+
+* Elevate `echogithub` to an *Import*.
+
 # echodeps 0.99.3
 
 ## New features

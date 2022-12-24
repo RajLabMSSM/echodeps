@@ -11,7 +11,7 @@
 #'
 #' @export
 #' @examples
-#' dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+#' dgc_out <- dep_graph_create(pkg = "rworkflows",
 #'                             method = "github",
 #'                             node_size = "clones_uniques")
 #' g <- dgc_out$graph

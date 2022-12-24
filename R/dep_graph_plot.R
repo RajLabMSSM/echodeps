@@ -13,12 +13,12 @@
 #' @inheritParams visNetwork::visOptions
 #' @export
 #' @examples
-#' dgc_out <- dep_graph_create(pkg_name = "rworkflows",
+#' dgc_out <- dep_graph_create(pkg = "rworkflows",
 #'                             method = "github")
 #' vis <- dep_graph_plot(g = dgc_out$subgraph,
-#'                       pkg_name = dgc_out$pkg_name)
+#'                       pkg = dgc_out$pkg)
 dep_graph_plot <- function(g,
-                           pkg_name,
+                           pkg,
                            shape = c("image", "hexagon"),
                            image =
                              file.path(
@@ -30,7 +30,7 @@ dep_graph_plot <- function(g,
                            show_plot = list(r=TRUE,
                                             browser=TRUE),
                            save_path = file.path(
-                               tempdir(), paste0(basename(pkg_name),
+                               tempdir(), paste0(basename(pkg),
                                                  ".dep_graph.html")),
                            width = NULL,
                            height = NULL,
@@ -41,6 +41,7 @@ dep_graph_plot <- function(g,
   requireNamespace("igraph")
 
   #### Check args ####
+  if(is.null(layout)) layout <- function(pkg,x) x
   if(is.null(save_path) && isTRUE(show_plot$browser)){
       messager("WARNING: save_path must be a valid file path",
                "to use show_plot with browser=TRUE.",v=verbose)
@@ -48,7 +49,7 @@ dep_graph_plot <- function(g,
   shape <- tolower(shape[1])
   #### Make plot ####
   vis <- visNetwork::visIgraph(g) |>
-    layout(pkg_name = pkg_name) |>
+    layout(pkg = pkg) |>
     visNetwork::visNodes(
       shape = shape,
       borderWidth = 2,
@@ -82,7 +83,7 @@ dep_graph_plot <- function(g,
       width = 2
     ) |>
     visNetwork::visOptions(nodesIdSelection = list(enabled = FALSE,
-                                                   selected = pkg_name,
+                                                   selected = pkg,
                                                    main = "select package"),
                            highlightNearest = TRUE,
                            width = width,

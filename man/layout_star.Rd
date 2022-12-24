@@ -4,12 +4,12 @@
 \alias{layout_star}
 \title{Star layout}
 \usage{
-layout_star(graph, pkg_name, ...)
+layout_star(graph, pkg, ...)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
-\item{pkg_name}{Name of the node to place at the center of the plot
+\item{pkg}{Name of the node to place at the center of the plot
 (e.g. "echolocatoR").}
 
 \item{...}{Additional arguments passed to
@@ -17,5 +17,5 @@ layout_star(graph, pkg_name, ...)
 }
 \description{
 Default layout function that arranges nodes in a star pattern with
-one node (\code{pkg_name}) at its center.
+one node (\code{pkg}) at its center.
 }
