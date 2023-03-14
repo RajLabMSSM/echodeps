@@ -12,10 +12,10 @@ revdep_graph_create(
   exclude = NULL,
   method_seed = c("github", "devtools"),
   method = c("devtools", "github"),
-  use_basename = TRUE,
-  sep = "/\\n",
   recursive = FALSE,
   node_size = NULL,
+  add_metadata = TRUE,
+  degrees = 2,
   verbose = TRUE
 )
 }
@@ -25,22 +25,22 @@ revdep_graph_create(
 \item{exclude}{A subset of of the main package's (\code{pkg} )
 dependencies to exclude in the graph.}
 
-\item{method_seed}{Method to get the initial layer of
-reverse dependencies with.}
-
-\item{method}{Method to create the dependency graph with:
+\item{method_seed}{Method to create the initial dependency graph with:
 \itemize{
-\item{"pkgnet"}{Extracts all the R packages that the target R package depends
+\item{"pkgnet" (\code{reverse=FALSE} only)}{
+Extracts all the R packages that the target R package depends
 on using \link[pkgnet]{CreatePackageReport}}
-\item{"github"}{Extracts all the GitHub repositories that depend on the
+\item{"github" (\code{reverse=FALSE or TRUE})}{
+Extracts all the GitHub repositories that depend on the
 respective GitHub repository of the target R package
 using \link[echogithub]{github_dependents}}
+\item{"devtools" (\code{reverse=TRUE}) only}{
+Extracts reverse dependencies using \link[devtools]{revdep}.}
 }
 If more than one option is provided, only the first is used.}
 
-\item{use_basename}{Only use the repo name to label each node.}
-
-\item{sep}{Character separator between owner and repo, to label each node.}
+\item{method}{Seed method for extracting first-order reverse dependencies
+of \code{pkg}.}
 
 \item{recursive}{If \code{TRUE} look for full set of recursive dependencies.}
 
@@ -53,7 +53,16 @@ Sets all nodes to the same size.}
 Scales node size to a vector of numeric values in the node metadata.}
 }}
 
+\item{add_metadata}{Add metadata to the graph
+using \link[echogithub]{github_metadata}.}
+
+\item{degrees}{The number of degrees out from the main \code{pkg} node to
+extend the dependency graph.}
+
 \item{verbose}{Print messages.}
+}
+\value{
+Named list.
 }
 \description{
 Create a reverse dependency graph.

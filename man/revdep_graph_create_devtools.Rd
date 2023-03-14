@@ -5,19 +5,17 @@
 \title{Create a reverse dependency graph: devtools}
 \usage{
 revdep_graph_create_devtools(
-  pkgs,
+  refs,
   pkg_target = NULL,
   exclude = NULL,
   recursive = FALSE,
   add_metadata = TRUE,
-  use_basename = TRUE,
-  sep = "/\\n",
   node_size = NULL,
   verbose = TRUE
 )
 }
 \arguments{
-\item{pkgs}{Package names.}
+\item{refs}{Package names.}
 
 \item{exclude}{A subset of of the main package's (\code{pkg} )
 dependencies to exclude in the graph.}
@@ -26,10 +24,6 @@ dependencies to exclude in the graph.}
 
 \item{add_metadata}{Add metadata to the graph
 using \link[echogithub]{github_metadata}.}
-
-\item{use_basename}{Only use the repo name to label each node.}
-
-\item{sep}{Character separator between owner and repo, to label each node.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
 \itemize{

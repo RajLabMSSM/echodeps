@@ -28,8 +28,7 @@ package_metadata <- function(pkgs = "echoverse",
                                          "Remotes",
                                          "SystemRequirements"),
                               verbose = TRUE){
-    # echoverseTemplate:::source_all()
-    # echoverseTemplate:::args2vars(package_metadata)
+    # devoptera::args2vars(package_metadata)
 
   requireNamespace("echogithub")
 
@@ -40,14 +39,21 @@ package_metadata <- function(pkgs = "echoverse",
   #### Iterate ####
   meta <- lapply(pkgs, function(pkg){
     tryCatch({
-      echogithub::description_extract(repo = pkg,
+      echogithub::description_extract(refs = pkg,
                                       fields = NULL,
                                       as_datatable = TRUE,
                                       verbose = FALSE)
     }, error = function(e){warning(e); NULL})
-  }) |> data.table::rbindlist(fill = TRUE) |>
-      data.table::setnames("Package","package") |>
-      data.table::setkey("package")
+  }) |> data.table::rbindlist(fill = TRUE)
+
+  if(nrow(meta)==0){
+      stop("No metadata retrieved.")
+  } else {
+      meta <- meta |>
+          data.table::setnames("Package","package") |>
+          data.table::setkey("package")
+  }
+  meta <- echogithub::add_owner_repo(dt = meta)
   #### Return ####
   return(meta)
 }

@@ -1,9 +1,7 @@
 #' Create a reverse dependency graph: devtools
 #'
 #' Create a reverse dependency graph.
-#' @param pkgs Package names.
-#' @param add_metadata Add metadata to the graph
-#' using \link[echogithub]{github_metadata}.
+#' @param refs Package names.
 #' @inheritParams dep_graph
 #' @inheritParams revdep_graph_create
 #' @inheritParams subset_graph
@@ -11,21 +9,19 @@
 #' @returns igraph
 #'
 #' @keywords internal
-#' @importFrom echogithub r_repos_data
-revdep_graph_create_devtools <- function(pkgs,
+revdep_graph_create_devtools <- function(refs,
                                          pkg_target=NULL,
                                          exclude=NULL,
                                          recursive=FALSE,
                                          add_metadata=TRUE,
-                                         use_basename=TRUE,
-                                         sep="/\n",
                                          node_size=NULL,
                                          verbose=TRUE){
     requireNamespace("igraph")
-    owner <- repo <- owner_repo <- NULL;
+    owner <- repo <- owner_repo <- target_ref<- package <- NULL;
 
     messager("Generating `devtools` package report.",v=verbose)
-    revdeps <- lapply(stats::setNames(pkgs,pkgs),
+    revdeps <- lapply(stats::setNames(basename(refs),
+                                      refs),
            function(p){
                messager("Finding reverse dependencies for:",p,v=verbose)
                d <- data.table::rbindlist(fill = TRUE,
@@ -50,49 +46,70 @@ revdep_graph_create_devtools <- function(pkgs,
                           ),
                       "local"=
                           data.table::data.table(
-                              package=tools::dependsOnPkgs(pkgs = p,
-                                                          recursive = recursive)
+                              package=tools::dependsOnPkgs(
+                                  pkgs = p,
+                                  recursive = recursive)
                           )
                   )
                )
                d[!duplicated(d$package),]
            }) |> data.table::rbindlist(fill = TRUE,
                                        use.names = TRUE,
-                                       idcol = "target")
+                                       idcol = "target_ref")
     #### Create graph ####
-    g <- igraph::graph_from_data_frame(d = revdeps[,c("package","target")])
+    ref_key <- refs[basename(refs) %in% revdeps$package]
+    extra_pkgs <- revdeps$package[!revdeps$package %in% names(refs)]
+    revdeps2 <- echogithub::description_extract(
+        refs = unique(extra_pkgs),
+        fields = c("Package","owner","repo","github_url")
+        ) |>
+        echogithub::add_owner_repo() |>
+        data.table::setkey("package")
+    ref_key <- c(stats::setNames(ref_key,basename(ref_key)),
+                 stats::setNames(revdeps2$ref, revdeps2$Package))
+    revdeps[,ref:=ref_key[package]]
+    # revdeps <- echogithub::add_owner_repo(dt = revdeps)
+    revdeps[,target_repo:=basename(target_ref)]
+    #### Exclude repos ####
+    if(!is.null(exclude)) revdeps <- revdeps[!package %in% exclude,]
+    #### Create graph ####
+    from_col <- "ref"
+    revdeps <- data.table::setcolorder(revdeps,c(from_col,"target_ref"))
+    g <- tidygraph::as_tbl_graph(revdeps)
+    igraph::V(g)$ref <- igraph::V(g)$name
     #### Get repo metadata ####
-    meta <- echogithub::r_repos_data(include = pkgs,
-                                     # add_downloads = TRUE,
-                                     # add_descriptions = TRUE,
-                                     # add_github = TRUE,
-                                     # cast = TRUE,
-                                     verbose = verbose)
-    if(nrow(meta)==0){
-        messager("WARNING: No metadata found.",v=verbose)
-        meta <- revdeps
-    } else {
-        pm_out <- prep_metadata(meta = meta,
-                                pkg = pkg_target,
-                                use_basename = use_basename,
-                                sep = sep)
-        pkg_target <- pm_out$pkg_name2
-        meta <- pm_out$meta
-        g <- add_meta_github(g = g,
-                             pkg = pkg_target,
-                             meta = meta,
-                             node_size = node_size)
-    }
+    # if(isTRUE(add_metadata)){
+    #     meta <- lapply(stats::setNames(refs, refs), function(p){
+    #         messager("Getting description:",p)
+    #         tryCatch({
+    #             echogithub::description_extract(ref = p,
+    #                                             fields = c("owner","repo"),
+    #                                             as_datatable = TRUE,
+    #                                             verbose = FALSE)
+    #         }, error=function(e){NULL})
+    #     }) |> data.table::rbindlist(use.names = TRUE, idcol = "input")
+    #     meta <- echogithub::add_owner_repo(dt = meta)
+    #     if(nrow(meta)==0){
+    #         messager("WARNING: No metadata found.",v=verbose)
+    #         meta <- revdeps
+    #     } else {
+    #         g <- add_meta_github(g = g,
+    #                              pkg = pkg_target,
+    #                              meta = meta,
+    #                              node_size = node_size)
+    #     }
+    # } else {
+    #     meta <- revdeps
+    # }
     #### subset graph ####
     g2 <- subset_graph(g = g,
                        exclude = exclude,
                        verbose = verbose)
     #### Return ####
-    return(list(pkgs=pkgs,
+    return(list(refs=refs,
                 pkg_target=pkg_target,
                 graph=g,
-                subgraph=g2,
-                metadata=meta))
+                subgraph=g2))
 }
 
 #### Other methods for getting reverse dependencies ####
@@ -112,6 +129,6 @@ revdep_graph_create_devtools <- function(pkgs,
 # rdeps4 <- tools::dependsOnPkgs("ade4",
 #                                recursive = FALSE)
 # #### Only works for CRAN packages? ####
-# rdeps5 <- tools::package_dependencies(packages = pkgs,
+# rdeps5 <- tools::package_dependencies(packages = refs,
 #                                       recursive = FALSE,
 #                                       reverse = TRUE)

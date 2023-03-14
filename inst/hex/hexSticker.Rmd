@@ -116,7 +116,24 @@ stick <- hexSticker::sticker(
   filename = filename, dpi = 300)
 print(stick)
 ```
+## Default sticker
 
+Using `hexSticker::geom_hexagon`
+
+```{r} 
+gghex <- 
+    hexSticker::ggplot() +
+    hexSticker::geom_hexagon(fill = ggplot2::alpha("black",.75), 
+                             color = ggplot2::alpha("white",.5)) +
+    hexSticker::geom_pkgname(package = "", 
+                             size=20, 
+                             color = ggplot2::alpha("white",.5)) +
+    hexSticker::theme_sticker()  
+
+hexSticker::save_sticker(filename = gsub("hex.png","hex_default.png",filename),
+                         sticker = gghex)
+print(gghex)
+```
 
 # Session Info 
 

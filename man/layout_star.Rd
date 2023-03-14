@@ -4,13 +4,15 @@
 \alias{layout_star}
 \title{Star layout}
 \usage{
-layout_star(graph, pkg, ...)
+layout_star(graph, pkg, layout = "layout_as_star", ...)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
 
 \item{pkg}{Name of the node to place at the center of the plot
 (e.g. "echolocatoR").}
+
+\item{layout}{: Character Name of igraph layout function to use. Default to "layout_nicely"}
 
 \item{...}{Additional arguments passed to
 \link[visNetwork]{visIgraphLayout}.}

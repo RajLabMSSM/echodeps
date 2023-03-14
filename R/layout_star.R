@@ -11,10 +11,11 @@
 #' @export
 layout_star <- function(graph,
                         pkg,
+                        layout = "layout_as_star",
                         ...){
     visNetwork::visIgraphLayout(
         graph = graph,
-        layout = "layout_as_star",
+        layout = layout,
         center=pkg,
         randomSeed = 11,
         ...)

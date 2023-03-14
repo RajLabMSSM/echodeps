@@ -9,8 +9,7 @@ dep_graph_create(
   exclude = NULL,
   method = c("pkgnet", "github"),
   node_size = NULL,
-  use_basename = TRUE,
-  sep = "/\\n",
+  add_metadata = TRUE,
   verbose = TRUE
 )
 }
@@ -20,15 +19,8 @@ dep_graph_create(
 \item{exclude}{A subset of of the main package's (\code{pkg} )
 dependencies to exclude in the graph.}
 
-\item{method}{Method to create the dependency graph with:
-\itemize{
-\item{"pkgnet"}{Extracts all the R packages that the target R package depends
-on using \link[pkgnet]{CreatePackageReport}}
-\item{"github"}{Extracts all the GitHub repositories that depend on the
-respective GitHub repository of the target R package
-using \link[echogithub]{github_dependents}}
-}
-If more than one option is provided, only the first is used.}
+\item{method}{Seed method for extracting first-order dependencies
+of \code{pkg}.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
 \itemize{
@@ -39,9 +31,8 @@ Sets all nodes to the same size.}
 Scales node size to a vector of numeric values in the node metadata.}
 }}
 
-\item{use_basename}{Only use the repo name to label each node.}
-
-\item{sep}{Character separator between owner and repo, to label each node.}
+\item{add_metadata}{Add metadata to the graph
+using \link[echogithub]{github_metadata}.}
 
 \item{verbose}{Print messages.}
 }

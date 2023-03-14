@@ -31,14 +31,14 @@ subset_graph <- function(g,
     nodes <- names(igraph::V(g))
     #### Included nodes ####
     if(!is.null(include)){
-        include_bool <- nodes %in% include
+        include_bool <- nodes %in% c(include,basename(include))
         messager("Including",
                  formatC(sum(include_bool),big.mark = ","),"nodes.",v=verbose)
         nodes <- nodes[include_bool]
     }
     #### Excluded nodes ####
     if(!is.null(exclude)){
-        exclude_bool <- !nodes %in% exclude
+        exclude_bool <- !nodes %in% c(exclude,basename(exclude))
         messager("Excluding",
                  formatC(sum(!exclude_bool),big.mark = ","),"nodes.",v=verbose)
         nodes <- nodes[exclude_bool]

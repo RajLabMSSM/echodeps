@@ -8,16 +8,16 @@ dep_graph_plot(
   g,
   pkg,
   shape = c("image", "hexagon"),
-  image = file.path("https://github.com/RajLabMSSM",
-    "Fine_Mapping/blob/master/echolocatoR", "images/bat_silhouette.png?raw=true"),
-  layout = echodeps::layout_star,
+  image = "hex_sticker",
+  layout = layout_igraph,
   hide_tooltip = TRUE,
   show_plot = list(r = TRUE, browser = TRUE),
   save_path = file.path(tempdir(), paste0(basename(pkg), ".dep_graph.html")),
   width = NULL,
   height = NULL,
-  colors = echodeps::construct_colors(),
+  colors = construct_colors(),
   font_face = "Tahoma",
+  use_basename = FALSE,
   verbose = TRUE
 )
 }
@@ -65,6 +65,8 @@ self-container HTML file.}
 Can use the \link[echodeps]{construct_colors} function to help create this.}
 
 \item{font_face}{Font to use for plot text.}
+
+\item{use_basename}{Only use the repo name to label each node.}
 
 \item{verbose}{Print messages.}
 }

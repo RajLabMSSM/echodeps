@@ -9,8 +9,8 @@ is_r_package(pkg, owner = NULL, verbose = TRUE)
 \arguments{
 \item{pkg}{Package name.}
 
-\item{owner}{Repo owner name
-(can be organization or individual GitHub account name).}
+\item{owner}{Name of the owner of the R packages'
+GitHub repository (optional).}
 
 \item{verbose}{Print messages.}
 }

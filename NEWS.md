@@ -9,6 +9,7 @@
 * Change all args: `pkg_name` --> `pkg` (more terse)
 * New function:
     - `merge_graphs`
+* Move `add_owner_repo` to `echogithub` and make more robust.
 
 ## Bug fixes
 

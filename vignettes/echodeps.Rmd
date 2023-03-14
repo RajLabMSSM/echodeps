@@ -69,7 +69,7 @@ to explore them further.
 ## echolocatoR
 
 ```{r graph1}
-res_echoverse <- echodeps::dep_graph(pkg = "echolocatoR",
+res_echoverse <- echodeps:: dep_graph(pkg = "echolocatoR",
                                      ## Setting show_plot for vignette purposes
                                      show_plot = list(r=TRUE,
                                                       browser=FALSE))

@@ -1,6 +1,8 @@
 #' Create a dependency graph
 #'
 #' Create a dependency graph.
+#' @param method Seed method for extracting first-order dependencies
+#'  of \code{pkg}.
 #' @inheritParams dep_graph
 #' @inheritParams subset_graph
 #' @export
@@ -11,8 +13,7 @@ dep_graph_create <- function(pkg,
                              exclude = NULL,
                              method = c("pkgnet","github"),
                              node_size = NULL,
-                             use_basename = TRUE,
-                             sep="/\n",
+                             add_metadata = TRUE,
                              verbose = TRUE){
 
     method <- tolower(method)[1]
@@ -23,12 +24,11 @@ dep_graph_create <- function(pkg,
                                            node_size=node_size,
                                            verbose=verbose)
    } else if(method=="github"){
-       dgc_out <- dep_graph_create_github(pkg=pkg,
+       dgc_out <- dep_graph_create_github(refs=pkg,
                                           exclude=exclude,
                                           node_size=node_size,
                                           reverse=FALSE,
-                                          use_basename=use_basename,
-                                          sep=sep,
+                                          add_metadata=add_metadata,
                                           verbose=verbose)
    } else {
         stopper("method must be one of:",

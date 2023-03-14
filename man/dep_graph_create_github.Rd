@@ -5,28 +5,25 @@
 \title{Create a dependency graph: GitHub}
 \usage{
 dep_graph_create_github(
-  pkg,
+  refs,
   exclude = NULL,
   add_traffic = TRUE,
-  sep = "/\\n",
-  use_basename = TRUE,
   node_size = NULL,
   reverse = FALSE,
+  add_metadata = TRUE,
   verbose = TRUE
 )
 }
 \arguments{
-\item{pkg}{Package to search dependencies for.}
+\item{refs}{Reference for one or more GitHub repository in owner/repo format
+ (e.g.\code{"neurogenomics/rworkflows"}), or an R package name 
+(e.g. \code{"rworkflows"}).}
 
 \item{exclude}{A subset of of the main package's (\code{pkg} )
 dependencies to exclude in the graph.}
 
 \item{add_traffic}{Add traffic metadata 
 with \link[echogithub]{github_traffic}.}
-
-\item{sep}{Character separator between owner and repo, to label each node.}
-
-\item{use_basename}{Only use the repo name to label each node.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
 \itemize{
@@ -45,6 +42,9 @@ and the packages that they depend on).}
  (packages that depend on \code{pkg},
  and the packages that depend on them).}
 }}
+
+\item{add_metadata}{Add metadata to the graph
+using \link[echogithub]{github_metadata}.}
 
 \item{verbose}{Print messages.}
 }

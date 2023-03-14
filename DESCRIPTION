@@ -19,11 +19,13 @@ biocViews:
 Imports:
     methods,
     data.table,
+    tidygraph,
     igraph,
     pkgnet,
     visNetwork,
     devtools,
     tools,
+    pals,
     echogithub
 Suggests:
     echolocatoR,
@@ -37,17 +39,15 @@ Suggests:
     echofinemap,
     downloadR,
     echoverseTemplate,
+    devoptera,
     rworkflows,
     markdown,
     rmarkdown,
-    magick,
     remotes,
     knitr,
     BiocStyle,
     covr,
     testthat (>= 3.0.0),
-    badger,
-    hexSticker,
     utils,
     dplyr
 Remotes:

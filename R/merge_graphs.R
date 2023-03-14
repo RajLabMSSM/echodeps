@@ -1,47 +1,44 @@
-merge_graphs <- function(res1,
-                         res2,
+#' Merge graphs
+#'
+#' Merge a list of graphs into a single graph.
+#' Can take in a list of \link[igraph]{igraph}s or
+#' a list of \link[igraph]{igraph}s,
+#' and can return a merged
+#'  \link[tidygraph]{tbl_graph} or a merged \link[igraph]{igraph}.
+#' @param graph_list A list of graphs.
+#' @param output Output format to return the graph in.
+#' @inheritParams dep_graph
+#' @inheritParams tidygraph::graph_join
+#' @returns Merge \link[tidygraph]{tbl_graph} or \link[igraph]{igraph}.
+#'
+#' @export
+#' @importFrom tidygraph as_tbl_graph as.igraph
+#' @import igraph
+#' @examples
+#' set.seed(2023)
+#' graph_list <- example_graphs()
+#' g <- merge_graphs(graph_list)
+#' plot(g, edge.label=igraph::E(g)$color)
+merge_graphs <- function(graph_list,
                          node_size,
-                         verbose=TRUE){
+                         output = c("tidygraph","igraph"),
+                         by = "ref",
+                         verbose = TRUE){
 
-    #### Get formatted target package name ####
-    pkg <- res1$pkg
-    #### Merge graphs ####
-    g <- igraph::union(res1$subgraph,
-                       res2$subgraph)
-    #### Identify duplicate coluns created by igraph::union ####
-    #### Drop list columns ####
-    # res1$metadata <- drop_list_cols(res1$metadata)
-    # res2$metadata <- drop_list_cols(res2$metadata)
-    # #### Find columns to merge by ####
-    # join_names <- base::intersect( names(res2$metadata),
-    #                                names(res1$metadata))
-    # #### Merge metadata ####
-    # meta <- data.table::merge.data.table(
-    #     res1$metadata,
-    #     res2$metadata,
-    #     by=join_names,
-    #     all = TRUE)
-    ##### Easier to just collect new metadata ####
-    meta <- echogithub::r_repos_data(include = unique(names(igraph::V(g))),
-                                     add_downloads = TRUE,
-                                     add_descriptions = TRUE,
-                                     add_github = TRUE,
-                                     cast = TRUE,
-                                     verbose = verbose)
-    data.table::setkey(meta,"repo")
-    #### Add the fixed metadata back in ####
-    g <- add_meta_github(g = g,
-                         pkg = pkg,
-                         meta = meta,
-                         node_size = node_size)
-    #### Remove the dup metadata columns from graph ####
-    vat <- igraph::vertex.attributes(g)
-    dup_names <- grep("_[0-9]$",names(vat), value = TRUE)
-    for(x in dup_names){
-        g <- igraph::remove.vertex.attribute(g,x)
+    output <- output[1]
+    #### Make all node names the basename #####
+    # graph_list <- lapply(graph_list, function(g){
+    #     igraph::V(g)$name <- basename(igraph::V(g)$name)
+    #     return(g)
+    # })
+    #### Convert to tidygraph ####
+    tg_list <- lapply(graph_list, tidygraph::as_tbl_graph)
+    g <- recursive_graph_join(grs = tg_list,
+                              by = by)
+    igraph::V(g)$name <- igraph::vertex_attr(g,by[1])
+    #### Convert to igraph ####
+    if(output=="igraph"){
+        g <- tidygraph::as.igraph(g)
     }
-    # g2 =igraph::graph.disjoint.union(seed_deps$subgraph,dgc_out$subgraph)
-    return(list(pkg=pkg,
-                graph=g,
-                metadata=meta))
+    return(g)
 }

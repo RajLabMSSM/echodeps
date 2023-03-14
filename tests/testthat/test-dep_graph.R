@@ -16,7 +16,7 @@ test_that("dep_graph works", {
     # testthat::expect_true(file.exists(res$save_path)) ## Doesnt exist?
 
     #### dplyr ####
-    res2 <- echodeps::dep_graph(pkg = "dplyr",
+    res2 <- echodeps:: dep_graph(pkg = "dplyr",
                                 shape = "hexagon",
                                 layout = function(graph, pkg){
                                     visNetwork::visIgraphLayout(

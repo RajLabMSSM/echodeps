@@ -6,8 +6,7 @@ add_meta_pkgnet <- function(g,
   requireNamespace("igraph")
 
   g <- set_metadata(g=g,
-                    meta=meta,
-                    cols=c("github_url","Version"))
+                    meta=meta)
   #### Set node size ####
   g <- set_node_size(g = g,
                      meta = meta,

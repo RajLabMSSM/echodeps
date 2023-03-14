@@ -1,6 +1,6 @@
 set_metadata <- function(g,
                          meta,
-                         cols){
+                         cols=names(meta)){
     #### IMPORTANT! Must omit list columns####
     meta <- drop_list_cols(meta)
     cols <- cols[cols %in% names(meta)]
@@ -11,7 +11,7 @@ set_metadata <- function(g,
         messager("WARNING: No valid metadata cols to add to graph.")
     } else {
         for(x in cols){
-            igraph::vertex_attr(g,name = x) <- meta[names(igraph::V(g)),][[x]]
+            igraph::vertex_attr(g, name = x) <- meta[names(igraph::V(g)),][[x]]
         }
     }
     return(g)

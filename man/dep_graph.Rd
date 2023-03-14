@@ -7,12 +7,11 @@
 dep_graph(
   pkg = "echolocatoR",
   exclude = NULL,
-  method = c("pkgnet", "github"),
+  method_seed = c("pkgnet", "github", "devtools"),
   shape = c("image", "hexagon"),
-  image = file.path("https://github.com/RajLabMSSM",
-    "Fine_Mapping/blob/master/echolocatoR", "images/bat_silhouette.png?raw=true"),
-  layout = echodeps::layout_star,
-  colors = echodeps::construct_colors(),
+  image = "hex_sticker",
+  layout = layout_igraph,
+  colors = construct_colors(),
   node_size = NULL,
   font_face = "Tahoma",
   show_plot = list(r = FALSE, browser = TRUE),
@@ -22,7 +21,7 @@ dep_graph(
   reverse = FALSE,
   recursive = FALSE,
   use_basename = TRUE,
-  sep = "/\\n",
+  add_metadata = TRUE,
   verbose = TRUE
 )
 }
@@ -32,13 +31,17 @@ dep_graph(
 \item{exclude}{A subset of of the main package's (\code{pkg} )
 dependencies to exclude in the graph.}
 
-\item{method}{Method to create the dependency graph with:
+\item{method_seed}{Method to create the initial dependency graph with:
 \itemize{
-\item{"pkgnet"}{Extracts all the R packages that the target R package depends
+\item{"pkgnet" (\code{reverse=FALSE} only)}{
+Extracts all the R packages that the target R package depends
 on using \link[pkgnet]{CreatePackageReport}}
-\item{"github"}{Extracts all the GitHub repositories that depend on the
+\item{"github" (\code{reverse=FALSE or TRUE})}{
+Extracts all the GitHub repositories that depend on the
 respective GitHub repository of the target R package
 using \link[echogithub]{github_dependents}}
+\item{"devtools" (\code{reverse=TRUE}) only}{
+Extracts reverse dependencies using \link[devtools]{revdep}.}
 }
 If more than one option is provided, only the first is used.}
 
@@ -100,7 +103,8 @@ and the packages that they depend on).}
 
 \item{use_basename}{Only use the repo name to label each node.}
 
-\item{sep}{Character separator between owner and repo, to label each node.}
+\item{add_metadata}{Add metadata to the graph
+using \link[echogithub]{github_metadata}.}
 
 \item{verbose}{Print messages.}
 }
@@ -113,9 +117,10 @@ plots only packages within the
 \examples{
 \dontrun{
 #### not run simply bc it causes weird errors with devtools::check() ####
-res <- dep_graph(pkg = "echoverse")
+res <- dep_graph(pkg = "echoverse",
+                 layout=layout_star)
 }
 res <- dep_graph(pkg = "rworkflows",
                  method = "github",
-                 use_basename = T, reverse=T)
+                 reverse = TRUE)
 }

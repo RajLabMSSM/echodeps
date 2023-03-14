@@ -7,13 +7,17 @@
 #' @param pkg Package to search dependencies for.
 #' @param exclude A subset of of the main package's (\code{pkg} )
 #' dependencies to exclude in the graph.
-#' @param method Method to create the dependency graph with:
+#' @param method_seed Method to create the initial dependency graph with:
 #' \itemize{
-#' \item{"pkgnet"}{Extracts all the R packages that the target R package depends
+#' \item{"pkgnet" (\code{reverse=FALSE} only)}{
+#' Extracts all the R packages that the target R package depends
 #' on using \link[pkgnet]{CreatePackageReport}}
-#' \item{"github"}{Extracts all the GitHub repositories that depend on the
+#' \item{"github" (\code{reverse=FALSE or TRUE})}{
+#' Extracts all the GitHub repositories that depend on the
 #' respective GitHub repository of the target R package
 #' using \link[echogithub]{github_dependents}}
+#' \item{"devtools" (\code{reverse=TRUE}) only}{
+#' Extracts reverse dependencies using \link[devtools]{revdep}.}
 #' }
 #' If more than one option is provided, only the first is used.
 #' @param show_plot A named list with two items:
@@ -50,10 +54,11 @@
 #'  (packages that depend on \code{pkg},
 #'  and the packages that depend on them).}
 #' }
-#' @param sep Character separator between owner and repo, to label each node.
 #' @param use_basename Only use the repo name to label each node.
 #' @param save_path Path to save the plot to, as an interactive,
 #'  self-container HTML file.
+#' @param add_metadata Add metadata to the graph
+#' using \link[echogithub]{github_metadata}.
 #' @param verbose Print messages.
 #' @inheritParams visNetwork::visNodes
 #' @inheritParams visNetwork::visSave
@@ -64,23 +69,19 @@
 #' @examples
 #' \dontrun{
 #' #### not run simply bc it causes weird errors with devtools::check() ####
-#' res <- dep_graph(pkg = "echoverse")
+#' res <- dep_graph(pkg = "echoverse",
+#'                  layout=layout_star)
 #' }
 #' res <- dep_graph(pkg = "rworkflows",
 #'                  method = "github",
-#'                  use_basename = T, reverse=T)
-dep_graph <- function(pkg = "echolocatoR",
+#'                  reverse = TRUE)
+dep_graph <- function(pkg,
                       exclude = NULL,
-                      method = c("pkgnet","github"),
+                      method_seed = c("pkgnet","github","devtools"),
                       shape = c("image", "hexagon"),
-                      image =
-                        file.path(
-                          "https://github.com/RajLabMSSM",
-                          "Fine_Mapping/blob/master/echolocatoR",
-                          "images/bat_silhouette.png?raw=true"
-                        ),
-                      layout = echodeps::layout_star,
-                      colors = echodeps::construct_colors(),
+                      image = "hex_sticker",
+                      layout = layout_igraph,
+                      colors = construct_colors(),
                       node_size = NULL,
                       font_face = "Tahoma",
                       show_plot = list(r=FALSE,
@@ -93,10 +94,10 @@ dep_graph <- function(pkg = "echolocatoR",
                       reverse = FALSE,
                       recursive = FALSE,
                       use_basename = TRUE,
-                      sep = "/\n",
+                      add_metadata = TRUE,
                       verbose = TRUE){
-  # echoverseTemplate:::source_all();
-  # echoverseTemplate:::args2vars(fn = dep_graph);
+
+  # devoptera::args2vars(fn = dep_graph, reassign = TRUE);
 
   if(length(pkg)>1) {
     messager("Warning:: pkg has length >1.",
@@ -106,23 +107,22 @@ dep_graph <- function(pkg = "echolocatoR",
   pkg <- pkg[1]
   #### Gather dependency graph data ####
   if(isTRUE(reverse)){
+      method_seed <- method_seed[method_seed!="pkgnet"][1]
       dgc_out <- revdep_graph_create(pkg = pkg,
-                                     method_seed = method,
+                                     method_seed = method_seed,
                                      # method = method,
                                      recursive = recursive,
                                      exclude = exclude,
                                      node_size = node_size,
-                                     use_basename = use_basename,
-                                     sep = sep,
+                                     add_metadata = add_metadata,
                                      verbose = verbose)
       g <- dgc_out$graph
   } else {
+      method_seed <- method_seed[method_seed!="devtools"][1]
       dgc_out <- dep_graph_create(pkg = pkg,
                                   exclude = exclude,
-                                  method = method,
+                                  method = method_seed,
                                   node_size = node_size,
-                                  use_basename = use_basename,
-                                  sep = sep,
                                   verbose = verbose)
       g <- dgc_out$subgraph
   }
@@ -138,9 +138,9 @@ dep_graph <- function(pkg = "echolocatoR",
                         height = height,
                         colors = colors,
                         font_face = font_face,
+                        use_basename = use_basename,
                         verbose = verbose)
   return(list(plot=vis,
-              metadata=dgc_out$metadata,
               graph=dgc_out$graph,
               subgraph=dgc_out$subgraph,
               report=dgc_out$report,

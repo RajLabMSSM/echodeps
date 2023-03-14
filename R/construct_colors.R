@@ -41,8 +41,8 @@ construct_colors <- function(
     tooltip_background = "rgba(0,0,0,.5)",
     tooltip_box_shadow = "rgba(247,247,247,0.5)",
     ## Plot background
-    background = node_background,
-    save_background = node_background){
+    background = "transparent",
+    save_background = background){
     list(
         ## Nodes
         node_background = node_background,

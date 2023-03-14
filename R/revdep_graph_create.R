@@ -2,11 +2,15 @@
 #'
 #' Create a reverse dependency graph.
 #' @source \href{https://stackoverflow.com/q/38428945}{igraph::union issue}
-#' @param method_seed Method to get the initial layer of
-#'  reverse dependencies with.
+#' @param method Seed method for extracting first-order reverse dependencies
+#'  of \code{pkg}.
+#' @param degrees The number of degrees out from the main \code{pkg} node to
+#' extend the dependency graph.
 #' @inheritParams dep_graph
 #' @inheritParams subset_graph
 #' @inheritParams devtools::revdep
+#' @returns Named list.
+#'
 #' @export
 #' @examples
 #' dgc_out <- revdep_graph_create(pkg = "rworkflows")
@@ -14,33 +18,32 @@ revdep_graph_create <- function(pkg,
                                 exclude=NULL,
                                 method_seed=c("github","devtools"),
                                 method = c("devtools","github"),
-                                use_basename=TRUE,
-                                sep="/\n",
                                 recursive=FALSE,
                                 node_size=NULL,
+                                add_metadata=TRUE,
+                                degrees = 2,
                                 verbose=TRUE){
-    # templateR:::source_all()
-    # templateR:::args2vars(revdep_graph_create)
-    requireNamespace("igraph")
 
+    # devoptera::args2vars(dep_graph, reassign = TRUE)
+    # devoptera::args2vars(revdep_graph_create, reassign = TRUE)
     method_seed <- tolower(method_seed)[1]
     method <- tolower(method)[1]
     #### Round 1 ####
+    messager("Finding degree1 dependents with 1 seed package.",
+             parallel=TRUE, v=verbose)
     if(method_seed=="github"){
-        seed_deps <- dep_graph_create_github(pkg=pkg,
+        seed_deps <- dep_graph_create_github(refs=pkg,
                                              exclude=exclude,
                                              node_size=node_size,
-                                             use_basename=use_basename,
+                                             add_metadata = FALSE,
                                              reverse = TRUE,
-                                             sep=sep,
                                              verbose=verbose)
     } else if(method_seed=="devtools"){
-        seed_deps <- revdep_graph_create_devtools(pkgs=pkg,
+        seed_deps <- revdep_graph_create_devtools(refs=pkg,
                                                   pkg_target=pkg,
                                                   exclude=exclude,
                                                   recursive=recursive,
-                                                  use_basename=use_basename,
-                                                  sep=sep,
+                                                  add_metadata = FALSE,
                                                   verbose=verbose)
     } else {
         stopper("method must be one of:",
@@ -52,43 +55,71 @@ revdep_graph_create <- function(pkg,
     if(length(length(seed_deps$graph))==0){
         stopper("No reverse dependencies found.")
     }
-    #### Exit early by skipping round 2####
-    if(is.null(method)) return(seed_deps)
+    #### Exit early by skipping round 2 ####
+    if(is.null(method) || degrees==1) return(seed_deps)
 
-    #### Round 2 ####
-    if(method=="github"){
-        dgc_out <- dep_graph_create_github(pkg=seed_deps$metadata$repo,
-                                           exclude=exclude,
-                                           node_size=node_size,
-                                           use_basename=use_basename,
-                                           sep=sep,
-                                           reverse = TRUE,
-                                           verbose=verbose)
-    } else if(method=="devtools"){
-        dgc_out <- revdep_graph_create_devtools(pkgs=seed_deps$metadata$repo,
-                                                pkg_target = pkg,
-                                                exclude=exclude,
-                                                recursive=recursive,
-                                                use_basename=use_basename,
-                                                sep=sep,
-                                                verbose=verbose)
-    } else {
-        stopper("method must be one of:",
-                paste("\n -",
-                      shQuote(eval(formals(revdep_graph_create)$method)),
-                      collapse = ""))
-    }
+    #### Round 2-Inf ####
+    extra_rounds <- stats::setNames(seq_len(degrees-1),
+                                    paste0("degree_",seq_len(degrees-1)+1))
+    seed_packages <- igraph::V(seed_deps$graph)$ref
+    degrees_out <- lapply(extra_rounds,
+                          function(i){
+        messager(paste(
+            "--- Finding",names(extra_rounds)[[i]],"dependents",
+            "with",length(unique(seed_packages)),"seed packages.",
+            "---"
+        ),v=verbose, parallel = TRUE)
+        if(method=="github"){
+            #### !!!!!!!!!!!!!!!!!!!!!!!!!!!! ####
+            #### !!!! UNDER CONSTRUCTION !!!! ####
+            #### !!!!!!!!!!!!!!!!!!!!!!!!!!!! ####
+            dgc_out <- dep_graph_create_github(refs=seed_packages,
+                                               exclude=exclude,
+                                               node_size=node_size,
+                                               reverse = TRUE,
+                                               add_traffic = FALSE,
+                                               verbose=verbose)
+        } else if(method=="devtools"){
+            dgc_out <- revdep_graph_create_devtools(refs=seed_packages,
+                                                    pkg_target = pkg,
+                                                    exclude=exclude,
+                                                    recursive=recursive,
+                                                    add_metadata = FALSE,
+                                                    verbose=verbose)
+        } else {
+            stopper("method must be one of:",
+                    paste("\n -",
+                          shQuote(eval(formals(revdep_graph_create)$method)),
+                          collapse = ""))
+        }
+        #### Packages from previous round become the new seed packages ####
+        seed_packages <- igraph::V(dgc_out$graph)$ref
+        return(dgc_out)
+    })
+
     #### Merge graphs ####
-    mg_out <- merge_graphs(res1 = seed_deps,
-                           res2 = dgc_out,
-                           node_size = node_size)
+    graph_list <- c(list(degree_1=seed_deps$subgraph),
+                    lapply(degrees_out,function(x){x$subgraph}))
+    g <- merge_graphs(graph_list = graph_list,
+                      by = c("ref","name"),
+                      node_size = node_size)
+    #### Add metadata ####
+    if(isTRUE(add_metadata)){
+        metadata <- prep_metadata(g = g,
+                                  verbose = verbose)
+        g <- add_meta_github(g = g,
+                             pkg = pkg,
+                             meta = metadata,
+                             node_size = node_size)
+    }  else{
+        metadata <- data.table::as.data.table(g)
+    }
     #### Create report summary ####
-    report <- report_summary(metadata = mg_out$metadata,
+    report <- report_summary(metadata = metadata,
                              verbose = verbose)
     #### Return ####
-    return(list(pkg = mg_out$pkg,
-                graph = mg_out$graph,
-                subgraph = seed_deps$subgraph,
-                report = report,
-                metadata = mg_out$metadata))
+    return(list(pkg = pkg,
+                graph = g,
+                graph_list = graph_list,
+                report = report))
 }

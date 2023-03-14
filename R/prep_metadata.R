@@ -1,28 +1,26 @@
-prep_metadata <- function(pkg,
-                          meta,
-                          owner=NULL,
-                          repo=NULL,
-                          use_basename,
-                          sep){
-    repo <- NULL;
+prep_metadata <- function(meta=NULL,
+                          g=NULL,
+                          verbose=TRUE){
+    package <- NULL;
 
-    ##### Add repo metadata ####
-    if(isTRUE(use_basename)) {
-        pkg_name2 <- if(!is.null(pkg)) basename(pkg) else NULL
-        key_var <- c("package","repo")
-        key_var <- key_var[key_var %in% names(meta)][1]
-        data.table::setkeyv(meta,key_var)
-    } else {
-        if(!is.null(owner) &&
-           !is.null(repo)){
-            pkg_name2 <- paste(owner,repo,sep=sep)
-        } else {
-            pkg_name2 <- meta[repo==pkg,]$owner_repo
-        }
-        key_var <- c("owner_repo","package")
-        key_var <- key_var[key_var %in% names(meta)][1]
-        data.table::setkeyv(meta,key_var)
+    if(is.null(meta)){
+        if(is.null(g)) stop("g is required when meta is NULL.")
+        meta <- echogithub::r_repos_data(include = unique(igraph::V(g)$ref),
+                                         add_downloads = TRUE,
+                                         add_descriptions = TRUE,
+                                         add_github = TRUE,
+                                         add_hex = TRUE,
+                                         cast = TRUE,
+                                         verbose = verbose)
     }
-    return(list(pkg_name2=pkg_name2,
-                meta=meta))
+    meta <- echogithub::add_owner_repo(dt = meta)
+    ##### Add repo metadata ####
+    key_var <- c("ref","owner_repo","package","repo")
+    key_var <- key_var[key_var %in% names(meta)][1]
+    # sum(is.na(meta[[key_var[1]]]))
+    #### Remove duplicates ####
+    meta <- meta[!duplicated(package),]
+    #### Set key ####
+    data.table::setkeyv(meta,key_var)
+    return(meta)
 }

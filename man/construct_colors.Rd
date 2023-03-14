@@ -19,8 +19,8 @@ construct_colors(
   tooltip_font = "#fff",
   tooltip_background = "rgba(0,0,0,.5)",
   tooltip_box_shadow = "rgba(247,247,247,0.5)",
-  background = node_background,
-  save_background = node_background
+  background = "transparent",
+  save_background = background
 )
 }
 \arguments{

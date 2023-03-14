@@ -26,7 +26,7 @@ add_ghpages <- function(meta = "echoverse",
                         add_vignettes = TRUE,
                         verbose = TRUE){
     # echoverseTemplate:::source_all()
-    # echoverseTemplate:::args2vars(list_ghpages)
+    # devoptera::args2vars(list_ghpages)
 
     requireNamespace("echogithub")
     URL <- link_ghpages_index <- Package <- NULL;

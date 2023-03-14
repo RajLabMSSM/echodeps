@@ -49,6 +49,5 @@ dep_graph_create_pkgnet <- function(pkg,
     return(list(pkg=pkg_name,
                 graph=g,
                 subgraph=g2,
-                report=report,
-                metadata=meta))
+                report=report))
 }
