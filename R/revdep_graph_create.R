@@ -29,7 +29,7 @@ revdep_graph_create <- function(pkg,
     method_seed <- tolower(method_seed)[1]
     method <- tolower(method)[1]
     #### Round 1 ####
-    messager("Finding degree1 dependents with 1 seed package.",
+    messager("Finding degree_1 dependents with 1 seed package.",
              parallel=TRUE, v=verbose)
     if(method_seed=="github"){
         seed_deps <- dep_graph_create_github(refs=pkg,

@@ -73,7 +73,7 @@
 #'                  layout=layout_star)
 #' }
 #' res <- dep_graph(pkg = "rworkflows",
-#'                  method = "github",
+#'                  method_seed = "github",
 #'                  reverse = TRUE)
 dep_graph <- function(pkg,
                       exclude = NULL,

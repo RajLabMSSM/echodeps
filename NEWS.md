@@ -10,6 +10,7 @@
 * New function:
     - `merge_graphs`
 * Move `add_owner_repo` to `echogithub` and make more robust.
+* New default layout: `layout_igraph`
 
 ## Bug fixes
 

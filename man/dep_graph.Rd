@@ -5,7 +5,7 @@
 \title{Dependency graph plot}
 \usage{
 dep_graph(
-  pkg = "echolocatoR",
+  pkg,
   exclude = NULL,
   method_seed = c("pkgnet", "github", "devtools"),
   shape = c("image", "hexagon"),
@@ -121,6 +121,6 @@ res <- dep_graph(pkg = "echoverse",
                  layout=layout_star)
 }
 res <- dep_graph(pkg = "rworkflows",
-                 method = "github",
+                 method_seed = "github",
                  reverse = TRUE)
 }
