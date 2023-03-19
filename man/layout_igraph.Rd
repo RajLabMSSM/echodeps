@@ -4,10 +4,13 @@
 \alias{layout_igraph}
 \title{\pkg{igraph} layout}
 \usage{
-layout_igraph(graph, layout = "layout_nicely", ...)
+layout_igraph(graph, pkg, layout = "layout_with_kk", ...)
 }
 \arguments{
 \item{graph}{: a visNetwork object}
+
+\item{pkg}{Unused argument; included here for compatibility
+with other layout functions.}
 
 \item{layout}{: Character Name of igraph layout function to use. Default to "layout_nicely"}
 

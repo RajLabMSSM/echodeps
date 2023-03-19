@@ -15,6 +15,7 @@
 ## Bug fixes
 
 * Elevate `echogithub` to an *Import*.
+* Fix `report_summary` counts.
 
 # echodeps 0.99.3
 

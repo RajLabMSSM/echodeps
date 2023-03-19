@@ -1,5 +1,7 @@
 report_summary <- function(metadata,
                            verbose=TRUE){
+
+    # metadata <- data.table::as.data.table(g)
     cols <- c(
         "stargazers_count","watchers_count","forks_count","subscribers_count",
         "clones_uniques","views_uniques",
@@ -10,9 +12,24 @@ report_summary <- function(metadata,
     if(length(cols)==0) return(NULL)
     messager("Creating report summary.",v=verbose)
     metadata[,(cols):= lapply(.SD, as.integer), .SDcols = cols]
-    report <- cbind(
-        package_count=length(unique(metadata$repo)),
-        colSums(metadata[,cols, with=FALSE])
+    sums <- colSums(metadata[,cols, with=FALSE], na.rm = TRUE)
+    report <- rbind(
+        data.table::data.table(
+            metric="package_count",
+            value=length(unique(metadata$Package))
+        ),
+        data.table::data.table(
+            metric="repo_count",
+            value=length(unique(metadata$repo))
+        ),
+        data.table::data.table(
+            metric="owner_count",
+            value=length(unique(metadata$owner))
+        ),
+        data.table::data.table(
+            metric=names(sums),
+            value=unname(sums)
+        )
     )
     return(report)
 }

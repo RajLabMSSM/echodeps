@@ -76,8 +76,8 @@ dep_graph_plot <- function(g,
     }
 
     #### Make plot ####
-    vis <- visNetwork::visIgraph(g) |>
-      layout(pkg = pkg) |>
+    vis <- visNetwork::visIgraph(g, type = "full") |>
+      layout(pkg) |>
       visNetwork::visNodes(
         shape = shape,
         borderWidth = 2,
