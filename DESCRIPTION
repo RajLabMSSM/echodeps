@@ -1,7 +1,7 @@
 Package: echodeps
 Type: Package
 Title: echoverse module: Create package dependency graphs
-Version: 0.99.3
+Version: 0.99.4
 Authors@R: 
     c(person(given = "Brian",
            family = "Schilder",
@@ -49,7 +49,8 @@ Suggests:
     covr,
     testthat (>= 3.0.0),
     utils,
-    dplyr
+    dplyr,
+    webshot2
 Remotes:
     github::RajLabMSSM/echogithub,
     github::RajLabMSSM/echodata,

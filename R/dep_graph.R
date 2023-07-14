@@ -72,8 +72,13 @@
 #' res <- dep_graph(pkg = "echoverse",
 #'                  layout=layout_star)
 #' }
-#' res <- dep_graph(pkg = "rworkflows",
+#' res <- dep_graph(pkg = "rworkflows", 
 #'                  method_seed = "github",
+#'                  exclude=c("neurogenomics_rworkflows",
+#'                            "neurogenomics_r_workflows",
+#'                            "NA"),
+#'                  recursive = TRUE,
+#'                  node_size = "total_downloads",
 #'                  reverse = TRUE)
 dep_graph <- function(pkg,
                       exclude = NULL,
@@ -87,10 +92,11 @@ dep_graph <- function(pkg,
                       show_plot = list(r=FALSE,
                                        browser=TRUE),
                       save_path = file.path(
-                        tempdir(), paste0(basename(pkg),
-                                          ".dep_graph.html")),
-                      width = "100%",
-                      height = "100%",
+                        tempdir(), 
+                        paste0(basename(pkg),".dep_graph.html")
+                      ),
+                      width = "100%", 
+                      height = "90vh",
                       reverse = FALSE,
                       recursive = FALSE,
                       use_basename = TRUE,
