@@ -52,15 +52,18 @@ revdep_graph_create_devtools <- function(refs,
                           )
                   )
                )
-               d[!duplicated(d$package),]
+               d[!duplicated(package),]
            }) |> data.table::rbindlist(fill = TRUE,
                                        use.names = TRUE,
                                        idcol = "target_ref")
     #### Create graph ####
     ref_key <- refs[basename(refs) %in% revdeps$package]
-    extra_pkgs <- revdeps$package[!revdeps$package %in% names(refs)]
+    extra_pkgs <- revdeps$package[!revdeps$package %in% basename(refs)]
+    dl <- rworkflows::get_description(refs = stats::setNames(unique(extra_pkgs),
+                                                            unique(extra_pkgs)),
+                                      use_repos = TRUE)
     revdeps2 <- echogithub::description_extract(
-        refs = unique(extra_pkgs),
+        desc_file  = dl,
         fields = c("Package","owner","repo","github_url")
         ) |>
         echogithub::add_owner_repo() |>
@@ -68,6 +71,7 @@ revdep_graph_create_devtools <- function(refs,
     ref_key <- c(stats::setNames(ref_key,basename(ref_key)),
                  stats::setNames(revdeps2$ref, revdeps2$Package))
     revdeps[,ref:=ref_key[package]]
+    revdeps$ref <- stringr::str_split(revdeps$ref," ", simplify = TRUE)[,1]
     # revdeps <- echogithub::add_owner_repo(dt = revdeps)
     revdeps[,target_repo:=basename(target_ref)]
     #### Exclude repos ####
@@ -75,6 +79,8 @@ revdep_graph_create_devtools <- function(refs,
     #### Create graph ####
     from_col <- "ref"
     revdeps <- data.table::setcolorder(revdeps,c(from_col,"target_ref"))
+    #### Remove NAs #####
+    revdeps <- revdeps[!is.na(ref) & !is.na(target_ref)]
     g <- tidygraph::as_tbl_graph(revdeps)
     igraph::V(g)$ref <- igraph::V(g)$name
     #### Get repo metadata ####

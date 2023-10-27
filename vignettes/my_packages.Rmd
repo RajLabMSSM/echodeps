@@ -1,0 +1,64 @@
+---
+title: "My packages" 
+author: "<h4>Author: <i>Brian M. Schilder</i></h4>" 
+date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
+output:
+  BiocStyle::html_document
+vignette: >
+    %\VignetteIndexEntry{echodata} 
+    %\usepackage[utf8]{inputenc}
+    %\VignetteEngine{knitr::rmarkdown}
+---
+
+
+```{r, echo=FALSE, include=FALSE}
+pkg <- read.dcf("../DESCRIPTION", fields = "Package")[1]
+library(pkg, character.only = TRUE)
+```
+
+
+```R
+library(`r pkg`)
+```
+
+# Create graoh
+
+ 
+```{r}
+res <- dep_graph(pkg = "rworkflows",
+                 method_seed = "github",
+                 reverse = TRUE) 
+```
+
+# Subset graph 
+
+```{r} 
+mypkgs <- grep("neurogenomics/|bschilder/|RajLabMSSM/|NathanSkene/",
+               names(igraph::V(res$graph)), 
+               value = TRUE)
+g <- res$graph |> 
+    tidygraph::filter(name %in% mypkgs) |>
+    dplyr::mutate(size=60)
+```
+
+# Plot network
+
+```{r} 
+plt <- echodeps::dep_graph_plot(g = g, 
+                                pkg = "rworkflows", 
+                                use_basename = TRUE)
+```
+
+ 
+# Session Info 
+
+<details> 
+
+```{r Session Info}
+utils::sessionInfo()
+```
+
+</details> 
+
+<br>
+

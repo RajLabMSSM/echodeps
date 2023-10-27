@@ -26,6 +26,7 @@ dep_graph_create_pkgnet <- function(pkg,
     report <- pkgnet::CreatePackageReport(pkg_name = pkg_name,
                                           pkg_reporters = pkg_reporters)
     g <- report$DependencyReporter$pkg_graph$igraph
+    g <- tidygraph::as_tbl_graph(g)
     #### Subset deps ####
     messager("Constructing dependency subgraph.",v=verbose)
     deps <- subset_deps(pkg = pkg,

@@ -26,6 +26,7 @@ revdep_graph_create <- function(pkg,
 
     # devoptera::args2vars(dep_graph, reassign = TRUE)
     # devoptera::args2vars(revdep_graph_create, reassign = TRUE)
+    first_degree <- NULL;
     method_seed <- tolower(method_seed)[1]
     method <- tolower(method)[1]
     #### Round 1 ####
@@ -57,7 +58,6 @@ revdep_graph_create <- function(pkg,
     }
     #### Exit early by skipping round 2 ####
     if(is.null(method) || degrees==1) return(seed_deps)
-
     #### Round 2-Inf ####
     extra_rounds <- stats::setNames(seq_len(degrees-1),
                                     paste0("degree_",seq_len(degrees-1)+1))
@@ -94,28 +94,32 @@ revdep_graph_create <- function(pkg,
         }
         #### Packages from previous round become the new seed packages ####
         seed_packages <- igraph::V(dgc_out$graph)$ref
+        #### Return #####
         return(dgc_out)
     })
-
     #### Merge graphs ####
     graph_list <- c(list(degree_1=seed_deps$subgraph),
                     lapply(degrees_out,function(x){x$subgraph}))
+
     g <- merge_graphs(graph_list = graph_list,
                       by = c("ref","name"),
                       node_size = node_size)
     #### Add metadata ####
     if(isTRUE(add_metadata)){
-        metadata <- prep_metadata(g = g,
-                                  verbose = verbose)
+        meta <- prep_metadata(g = g,
+                              verbose = verbose)
         g <- add_meta_github(g = g,
                              pkg = pkg,
-                             meta = metadata,
+                             meta = meta,
                              node_size = node_size)
     }  else{
-        metadata <- data.table::as.data.table(g)
+        meta <- data.table::as.data.table(g)
     }
+    #### Add info about dependency degree ####
+    meta[,first_degree:=basename(ref) %in% basename(
+        igraph::V(seed_deps$graph)$ref)]
     #### Create report summary ####
-    report <- report_summary(metadata = metadata,
+    report <- report_summary(meta = meta,
                              verbose = verbose)
     #### Return ####
     return(list(pkg = pkg,

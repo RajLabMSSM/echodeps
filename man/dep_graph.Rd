@@ -17,7 +17,7 @@ dep_graph(
   show_plot = list(r = FALSE, browser = TRUE),
   save_path = file.path(tempdir(), paste0(basename(pkg), ".dep_graph.html")),
   width = "100\%",
-  height = "100\%",
+  height = "90vh",
   reverse = FALSE,
   recursive = FALSE,
   use_basename = TRUE,

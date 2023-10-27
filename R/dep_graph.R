@@ -90,7 +90,7 @@ dep_graph <- function(pkg,
                         tempdir(), paste0(basename(pkg),
                                           ".dep_graph.html")),
                       width = "100%",
-                      height = "100%",
+                      height = "90vh",
                       reverse = FALSE,
                       recursive = FALSE,
                       use_basename = TRUE,
@@ -124,7 +124,7 @@ dep_graph <- function(pkg,
                                   method = method_seed,
                                   node_size = node_size,
                                   verbose = verbose)
-      g <- dgc_out$subgraph
+      g <- dgc_out$graph
   }
   #### Create interactive plot ####
   vis <- dep_graph_plot(g = g,

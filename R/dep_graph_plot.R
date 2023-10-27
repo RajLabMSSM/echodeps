@@ -28,8 +28,8 @@ dep_graph_plot <- function(g,
                            save_path = file.path(
                                tempdir(), paste0(basename(pkg),
                                                  ".dep_graph.html")),
-                           width = NULL,
-                           height = NULL,
+                           width = "100%",
+                           height = "90vh",
                            colors = construct_colors(),
                            font_face = "Tahoma",
                            use_basename = FALSE,
@@ -48,6 +48,7 @@ dep_graph_plot <- function(g,
     image <- image[1]
     #### Set node names ####
     if(isTRUE(use_basename)){
+        g <- tidygraph::filter(g, !duplicated(basename(name)))
         igraph::V(g)$name <- basename(igraph::V(g)$name)
         pkg <- basename(pkg)
     } else {
@@ -76,7 +77,21 @@ dep_graph_plot <- function(g,
     }
 
     #### Make plot ####
-    vis <- visNetwork::visIgraph(g, type = "full") |>
+    # width = width,
+    # height = height
+    vis <- visNetwork::toVisNetworkData(g) %>%
+        {
+            do.call(visNetwork::visNetwork,
+                    c(., list(#main = main,
+                              height = height,
+                              width = width,
+                              # submain = submain,
+                              background = "transparent")
+                    )
+            )
+        } |>
+    # vis <- visNetwork::visIgraph(g,
+    #                              type = "full") |>
       layout(pkg) |>
       visNetwork::visNodes(
         shape = shape,
@@ -113,9 +128,7 @@ dep_graph_plot <- function(g,
       visNetwork::visOptions(nodesIdSelection = list(enabled = FALSE,
                                                      selected = pkg,
                                                      main = "select package"),
-                             highlightNearest = TRUE,
-                             width = width,
-                             height = height) |>
+                             highlightNearest = TRUE) |>
       visNetwork::visInteraction(
         tooltipStyle =paste(
           paste("position:",if(isTRUE(hide_tooltip))"fixed"else"relative"),

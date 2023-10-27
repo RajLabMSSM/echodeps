@@ -3,9 +3,11 @@ prep_metadata <- function(meta=NULL,
                           verbose=TRUE){
     package <- NULL;
 
+    include <- unique(igraph::V(g)$ref)
+    include <- include[!duplicated(basename(include))]
     if(is.null(meta)){
         if(is.null(g)) stop("g is required when meta is NULL.")
-        meta <- echogithub::r_repos_data(include = unique(igraph::V(g)$ref),
+        meta <- echogithub::r_repos_data(include = include,
                                          add_downloads = TRUE,
                                          add_descriptions = TRUE,
                                          add_github = TRUE,
