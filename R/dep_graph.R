@@ -74,6 +74,11 @@
 #' }
 #' res <- dep_graph(pkg = "rworkflows",
 #'                  method_seed = "github",
+#'                  exclude=c("neurogenomics_rworkflows",
+#'                            "neurogenomics_r_workflows",
+#'                            "NA"),
+#'                  recursive = TRUE,
+#'                  node_size = "total_downloads",
 #'                  reverse = TRUE)
 dep_graph <- function(pkg,
                       exclude = NULL,

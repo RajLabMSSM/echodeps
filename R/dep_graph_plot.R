@@ -12,6 +12,8 @@
 #' @inheritParams visNetwork::visSave
 #' @inheritParams visNetwork::visOptions
 #' @export
+#' @import visNetwork
+#' @import igraph
 #' @examples
 #' dgc_out <- dep_graph_create(pkg = "rworkflows",
 #'                             method = "github")
@@ -35,8 +37,6 @@ dep_graph_plot <- function(g,
                            use_basename = FALSE,
                            verbose = TRUE){
     # devoptera::args2vars(dep_graph_plot, reassign = TRUE)
-    requireNamespace("visNetwork")
-    requireNamespace("igraph")
 
     #### Check args ####
     if(is.null(layout)) layout <- function(pkg,x) x
@@ -77,21 +77,22 @@ dep_graph_plot <- function(g,
     }
 
     #### Make plot ####
-    # width = width,
-    # height = height
-    vis <- visNetwork::toVisNetworkData(g) %>%
-        {
-            do.call(visNetwork::visNetwork,
-                    c(., list(#main = main,
-                              height = height,
-                              width = width,
-                              # submain = submain,
-                              background = "transparent")
-                    )
-            )
-        } |>
-    # vis <- visNetwork::visIgraph(g,
-    #                              type = "full") |>
+    vis <-
+      visNetwork::toVisNetworkData(g) %>%
+      {
+        do.call(visNetwork::visNetwork,
+                c(., list(main = list(text=NULL,
+                                      style="color:white"),
+                          submain = list(text=NULL,
+                                         style="color:white"),
+                          background = colors$save_background,
+                          width = width,
+                          height = height
+                )
+                )
+        )
+      } |>
+      # visNetwork::visIgraph(g, type = "full") |>
       layout(pkg) |>
       visNetwork::visNodes(
         shape = shape,
@@ -112,7 +113,7 @@ dep_graph_plot <- function(g,
                     strokeColor=colors$node_font_stroke),
         shadow = list(enabled = TRUE,
                       size = 40,
-                      color=colors$node_shadow) # "#03b1f0"
+                      color=colors$node_shadow)
       ) |>
       visNetwork::visEdges(
         arrows = 'from',
