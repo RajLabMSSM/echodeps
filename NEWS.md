@@ -1,3 +1,12 @@
+# echodeps 0.99.5
+
+## New features
+
+* Standardize `rworkflows.yml` with canonical template:
+  replace `run_crancheck` with `run_rcmdcheck` + `as_cran`,
+  enable Docker on `ghcr.io`, set `write-all` permissions,
+  use `GITHUB_TOKEN`, add `devel`/`RELEASE_**` branch triggers.
+
 # echodeps 0.99.4
 
 ## New features
