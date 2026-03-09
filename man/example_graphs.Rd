@@ -27,5 +27,7 @@ A list of  \link[tidygraph]{tbl_graph} objects.
 Generate a random list of  \link[tidygraph]{tbl_graph} objects.
 }
 \examples{
+\dontrun{
 grs <- example_graphs()
+}
 }

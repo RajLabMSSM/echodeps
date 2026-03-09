@@ -32,7 +32,7 @@ dep_graph(
 dependencies to exclude in the graph.}
 
 \item{method_seed}{Method to create the initial dependency graph with:
-\itemize{
+\describe{
 \item{"pkgnet" (\code{reverse=FALSE} only)}{
 Extracts all the R packages that the target R package depends
 on using \link[pkgnet]{CreatePackageReport}}
@@ -49,8 +49,8 @@ If more than one option is provided, only the first is used.}
 
 \item{image}{: List or String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.
 \itemize{
-  \item{"unselected"}{ : String. Unselected (default) image URL.}
-  \item{"selected"}{ : String. Selected image URL.}
+  \item "unselected" String. Unselected (default) image URL.
+  \item "selected" String. Selected image URL.
 }}
 
 \item{layout}{\pkg{visNetwork} layout function
@@ -65,7 +65,7 @@ default force-directed \link[visNetwork]{visIgraph} layout, "layout_nicely".}
 Can use the \link[echodeps]{construct_colors} function to help create this.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
-\itemize{
+\describe{
 \item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
 \item{<numeric> : }{User-provided node size.
 Sets all nodes to the same size.}
@@ -76,7 +76,7 @@ Scales node size to a vector of numeric values in the node metadata.}
 \item{font_face}{Font to use for plot text.}
 
 \item{show_plot}{A named list with two items:
-\itemize{
+\describe{
 \item{r}{Whether to show the dependency graph in R/Rstudio
 (will \emph{not} show user-specific \code{background} color)}.
 \item{browser}{Whether to show the dependency graph in default web browser
@@ -90,7 +90,7 @@ self-container HTML file.}
 
 \item{height}{: String. Default to "100\%". The height of the network in pixels or as a percentage.}
 
-\item{reverse}{\itemize{
+\item{reverse}{\describe{
 \item{\code{FALSE} (default)}{Create a forward dependency graph
 (packages that \code{pkg} depends on,
 and the packages that they depend on).}
@@ -120,7 +120,14 @@ plots only packages within the
 res <- dep_graph(pkg = "echoverse",
                  layout=layout_star)
 }
+\dontrun{
 res <- dep_graph(pkg = "rworkflows",
                  method_seed = "github",
+                 exclude=c("neurogenomics_rworkflows",
+                           "neurogenomics_r_workflows",
+                           "NA"),
+                 recursive = TRUE,
+                 node_size = "total_downloads",
                  reverse = TRUE)
+}
 }

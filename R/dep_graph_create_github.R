@@ -20,7 +20,7 @@ dep_graph_create_github <- function(refs,
 
     messager("Generating `github` package report.",v=verbose)
     #### Get repo owner/name ####
-    info <- echogithub:::description_extract(refs = refs,
+    info <- echogithub::description_extract(refs = refs,
                                              fields = c("github_url",
                                                         "owner",
                                                         "repo"),

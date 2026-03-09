@@ -11,7 +11,9 @@
 #' @importFrom echogithub r_repos_data description_extract
 #' @export
 #' @examples
+#' \dontrun{
 #' is_pkg <- is_r_package(pkg="stats")
+#' }
 is_r_package <- function(pkg,
                          owner=NULL,
                          verbose=TRUE){

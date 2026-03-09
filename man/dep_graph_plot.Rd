@@ -31,8 +31,8 @@ dep_graph_plot(
 
 \item{image}{: List or String. Default to undefined. When the shape is set to image or circularImage, this option should be the URL to an image. If the image cannot be found, the brokenImage option can be used.
 \itemize{
-  \item{"unselected"}{ : String. Unselected (default) image URL.}
-  \item{"selected"}{ : String. Selected image URL.}
+  \item "unselected" String. Unselected (default) image URL.
+  \item "selected" String. Selected image URL.
 }}
 
 \item{layout}{\pkg{visNetwork} layout function
@@ -47,7 +47,7 @@ default force-directed \link[visNetwork]{visIgraph} layout, "layout_nicely".}
 the cursor is hovering over the respective node.}
 
 \item{show_plot}{A named list with two items:
-\itemize{
+\describe{
 \item{r}{Whether to show the dependency graph in R/Rstudio
 (will \emph{not} show user-specific \code{background} color)}.
 \item{browser}{Whether to show the dependency graph in default web browser
@@ -75,8 +75,10 @@ Plot a dependency graph between a set of R packages
 as an interactive network.
 }
 \examples{
+\dontrun{
 dgc_out <- dep_graph_create(pkg = "rworkflows",
                             method = "github")
 vis <- dep_graph_plot(g = dgc_out$subgraph,
                       pkg = dgc_out$pkg)
+}
 }

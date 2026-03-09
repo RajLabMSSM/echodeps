@@ -36,21 +36,21 @@ longer delay is needed for all assets to display properly.}
 \item{zoom}{A number specifying the zoom factor. A zoom factor of 2 will
 result in twice as many pixels vertically and horizontally. Note that using
 2 is not exactly the same as taking a screenshot on a HiDPI (Retina)
-device: it is like increasing the zoom to 200% in a desktop browser and
+device: it is like increasing the zoom to 200\% in a desktop browser and
 doubling the height and width of the browser window. This differs from
 using a HiDPI device because some web pages load different,
 higher-resolution images when they know they will be displayed on a HiDPI
 device (but using zoom will not report that there is a HiDPI device).}
 
-\item{vwidth}{Viewport width. This is the width of the browser "window".}
+\item{vwidth, vheight}{Viewport width and height. This is the width or height
+of the virtual browser "window". Chrome expects integer values; numeric
+values are rounded to the nearest integer.}
 
-\item{vheight}{Viewport height This is the height of the browser "window".}
-
-\item{geometry}{Scaling specification. Can be a percent, as in \code{"50\%"},
-or pixel dimensions like \code{"120x120"}, \code{"120x"}, or \code{"x120"}.
-Any valid ImageMagick geometry specification can be used. If \code{filename}
-contains multiple images, this can be a vector to specify distinct sizes
-for each image.}
+\item{geometry}{Scaling specification. Can be a percent, as in
+\code{"50\%"}, or pixel dimensions like \code{"120x120"},
+\code{"120x"}, or \code{"x120"}. Any valid ImageMagick geometry
+specification can be used. If \code{filename} contains multiple images,
+this can be a vector to specify distinct sizes for each image.}
 
 \item{run_shrink}{Run \link[webshot2]{shrink} on the png.}
 }
@@ -61,9 +61,11 @@ png file path
 Save a visNetwork object as a png.
 }
 \examples{
+\dontrun{
 save_path <- tempfile(fileext = ".html")
 res <- dep_graph(pkg = "echoverse",
                  layout=layout_star,
                  save_path=save_path)
 visnet_save(url = "https://datastorm-open.github.io/visNetwork/")
+}
 }

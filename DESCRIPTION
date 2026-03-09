@@ -1,7 +1,8 @@
 Package: echodeps
 Type: Package
-Title: echoverse module: Create package dependency graphs
-Version: 0.99.5
+Title: Echoverse Module: Create Package Dependency Graphs
+Version: 0.99.6
+Date: 2026-03-08
 Authors@R: 
     c(person(given = "Brian",
            family = "Schilder",
@@ -9,7 +10,7 @@ Authors@R:
            email = "brian_schilder@alumni.brown.edu",
            comment = c(ORCID = "0000-0001-5949-2191"))
            ) 
-Description: echoverse module: Create package dependency graphs.
+Description: Echoverse module: Create package dependency graphs.
 URL: https://github.com/RajLabMSSM/echodeps
 BugReports: https://github.com/RajLabMSSM/echodeps/issues
 Encoding: UTF-8
@@ -65,7 +66,7 @@ Remotes:
     github::RajLabMSSM/echoverseTemplate,
     github::RajLabMSSM/echolocatoR,
     github::neurogenomics/rworkflows
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 License: GPL-3
 Config/testthat/edition: 3

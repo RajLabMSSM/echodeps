@@ -2,6 +2,8 @@
 #' 
 #' Convert an interactive HTML widget to a static PNG image.
 #' @param path Path to an HTML file.
+#' @param png_path Path to save the PNG file.
+#'   Defaults to replacing the \code{.html} extension with \code{.png}.
 #' @param res Resolution multiplier.
 #' @inheritParams webshot2::webshot 
 #' @returns Path to PNG.

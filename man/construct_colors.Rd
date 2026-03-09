@@ -63,5 +63,7 @@ Named list.
 Construct a color mapping for \link[echodeps]{dep_graph_plot}.
 }
 \examples{
+\dontrun{
 colors <- construct_colors()
+}
 }

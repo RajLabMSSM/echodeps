@@ -46,8 +46,10 @@ Joins a list of graphs into a single graph.
 This recursively implements \link[tidygraph]{graph_join}.
 }
 \examples{
+\dontrun{
 set.seed(2023)
 grs <- example_graphs()
 g <- recursive_graph_join(grs)
 plot(g, edge.label=igraph::E(g)$color)
+}
 }

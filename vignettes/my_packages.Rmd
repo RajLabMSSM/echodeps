@@ -5,7 +5,7 @@ date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
   BiocStyle::html_document
 vignette: >
-    %\VignetteIndexEntry{echodata} 
+    %\VignetteIndexEntry{My packages}
     %\usepackage[utf8]{inputenc}
     %\VignetteEngine{knitr::rmarkdown}
 ---
@@ -24,28 +24,28 @@ library(`r pkg`)
 # Create graoh
 
  
-```{r}
+```{r, eval=FALSE}
 res <- dep_graph(pkg = "rworkflows",
                  method_seed = "github",
-                 reverse = TRUE) 
+                 reverse = TRUE)
 ```
 
-# Subset graph 
+# Subset graph
 
-```{r} 
+```{r, eval=FALSE}
 mypkgs <- grep("neurogenomics/|bschilder/|RajLabMSSM/|NathanSkene/",
-               names(igraph::V(res$graph)), 
+               names(igraph::V(res$graph)),
                value = TRUE)
-g <- res$graph |> 
+g <- res$graph |>
     tidygraph::filter(name %in% mypkgs) |>
     dplyr::mutate(size=60)
 ```
 
 # Plot network
 
-```{r} 
-plt <- echodeps::dep_graph_plot(g = g, 
-                                pkg = "rworkflows", 
+```{r, eval=FALSE}
+plt <- echodeps::dep_graph_plot(g = g,
+                                pkg = "rworkflows",
                                 use_basename = TRUE)
 ```
 

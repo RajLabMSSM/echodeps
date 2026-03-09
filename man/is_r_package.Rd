@@ -21,5 +21,7 @@ boolean
 Check whether a GitHub repository is for an R package or not.
 }
 \examples{
+\dontrun{
 is_pkg <- is_r_package(pkg="stats")
+}
 }

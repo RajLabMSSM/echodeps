@@ -8,7 +8,7 @@
 #' @param exclude A subset of of the main package's (\code{pkg} )
 #' dependencies to exclude in the graph.
 #' @param method_seed Method to create the initial dependency graph with:
-#' \itemize{
+#' \describe{
 #' \item{"pkgnet" (\code{reverse=FALSE} only)}{
 #' Extracts all the R packages that the target R package depends
 #' on using \link[pkgnet]{CreatePackageReport}}
@@ -21,7 +21,7 @@
 #' }
 #' If more than one option is provided, only the first is used.
 #' @param show_plot A named list with two items:
-#' \itemize{
+#' \describe{
 #' \item{r}{Whether to show the dependency graph in R/Rstudio
 #' (will \emph{not} show user-specific \code{background} color)}.
 #' \item{browser}{Whether to show the dependency graph in default web browser
@@ -38,7 +38,7 @@
 #' Can use the \link[echodeps]{construct_colors} function to help create this.
 #' @param font_face Font to use for plot text.
 #' @param node_size Strategy for setting node sizes. Can be one of:
-#' \itemize{
+#' \describe{
 #' \item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
 #' \item{<numeric> : }{User-provided node size.
 #' Sets all nodes to the same size.}
@@ -46,7 +46,7 @@
 #' Scales node size to a vector of numeric values in the node metadata.}
 #' }
 #' @param reverse
-#' \itemize{
+#' \describe{
 #' \item{\code{FALSE} (default)}{Create a forward dependency graph
 #' (packages that \code{pkg} depends on,
 #' and the packages that they depend on).}
@@ -72,6 +72,7 @@
 #' res <- dep_graph(pkg = "echoverse",
 #'                  layout=layout_star)
 #' }
+#' \dontrun{
 #' res <- dep_graph(pkg = "rworkflows",
 #'                  method_seed = "github",
 #'                  exclude=c("neurogenomics_rworkflows",
@@ -80,6 +81,7 @@
 #'                  recursive = TRUE,
 #'                  node_size = "total_downloads",
 #'                  reverse = TRUE)
+#' }
 dep_graph <- function(pkg,
                       exclude = NULL,
                       method_seed = c("pkgnet","github","devtools"),

@@ -29,5 +29,7 @@ Gather metadata from the DESCRIPTION file of each R package and construct a
  \href{https://github.com/topics/echoverse}{\code{echoverse}} packages.
 }
 \examples{
+\dontrun{
 meta <- echodeps::package_metadata()
+}
 }

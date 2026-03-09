@@ -1,5 +1,6 @@
 test_that("dep_graph_plot works", {
 
+    testthat::skip_on_cran()
     #### Create graph ####
     dgc_out <- dep_graph_create(pkg = "rworkflows",
                                 method = "github",

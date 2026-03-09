@@ -26,7 +26,7 @@ revdep_graph_create(
 dependencies to exclude in the graph.}
 
 \item{method_seed}{Method to create the initial dependency graph with:
-\itemize{
+\describe{
 \item{"pkgnet" (\code{reverse=FALSE} only)}{
 Extracts all the R packages that the target R package depends
 on using \link[pkgnet]{CreatePackageReport}}
@@ -45,7 +45,7 @@ of \code{pkg}.}
 \item{recursive}{If \code{TRUE} look for full set of recursive dependencies.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
-\itemize{
+\describe{
 \item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
 \item{<numeric> : }{User-provided node size.
 Sets all nodes to the same size.}
@@ -68,5 +68,7 @@ Named list.
 Create a reverse dependency graph.
 }
 \examples{
+\dontrun{
 dgc_out <- revdep_graph_create(pkg = "rworkflows")
+}
 }

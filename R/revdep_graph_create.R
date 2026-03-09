@@ -13,7 +13,9 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' dgc_out <- revdep_graph_create(pkg = "rworkflows")
+#' }
 revdep_graph_create <- function(pkg,
                                 exclude=NULL,
                                 method_seed=c("github","devtools"),

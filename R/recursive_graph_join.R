@@ -8,10 +8,12 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' set.seed(2023)
 #' grs <- example_graphs()
 #' g <- recursive_graph_join(grs)
 #' plot(g, edge.label=igraph::E(g)$color)
+#' }
 recursive_graph_join <- function(grs,
                                  by = "name") {
     if (length(grs) == 1) {

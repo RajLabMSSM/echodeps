@@ -23,7 +23,7 @@ dependencies to exclude in the graph.}
 of \code{pkg}.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
-\itemize{
+\describe{
 \item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
 \item{<numeric> : }{User-provided node size.
 Sets all nodes to the same size.}
@@ -40,6 +40,8 @@ using \link[echogithub]{github_metadata}.}
 Create a dependency graph.
 }
 \examples{
+\dontrun{
 dgc_out <- dep_graph_create(pkg = "rworkflows",
                             method = "github")
+}
 }

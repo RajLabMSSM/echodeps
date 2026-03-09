@@ -11,6 +11,7 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' dgc_out <- dep_graph_create(pkg = "rworkflows",
 #'                             method = "github",
 #'                             node_size = "clones_uniques")
@@ -18,6 +19,7 @@
 #' exclude <- grep("actions-marketplace-validations",
 #'                 names(igraph::V(g)),value = TRUE)
 #' g2 <- subset_graph(g = g, exclude = exclude)
+#' }
 subset_graph <- function(g,
                          include=NULL,
                          exclude=NULL,

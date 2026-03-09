@@ -16,7 +16,7 @@ merge_graphs(
 \item{graph_list}{A list of graphs.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
-\itemize{
+\describe{
 \item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
 \item{<numeric> : }{User-provided node size.
 Sets all nodes to the same size.}
@@ -68,8 +68,10 @@ and can return a merged
  \link[tidygraph]{tbl_graph} or a merged \link[igraph]{igraph}.
 }
 \examples{
+\dontrun{
 set.seed(2023)
 graph_list <- example_graphs()
 g <- merge_graphs(graph_list)
 plot(g, edge.label=igraph::E(g)$color)
+}
 }

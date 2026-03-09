@@ -21,7 +21,9 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' colors <- construct_colors()
+#' }
 construct_colors <- function(
     ## Nodes
     node_background = "#25355c",

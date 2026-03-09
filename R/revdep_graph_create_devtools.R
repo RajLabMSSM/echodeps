@@ -71,7 +71,7 @@ revdep_graph_create_devtools <- function(refs,
     ref_key <- c(stats::setNames(ref_key,basename(ref_key)),
                  stats::setNames(revdeps2$ref, revdeps2$Package))
     revdeps[,ref:=ref_key[package]]
-    revdeps$ref <- stringr::str_split(revdeps$ref," ", simplify = TRUE)[,1]
+    revdeps$ref <- vapply(strsplit(revdeps$ref," "), `[`, character(1), 1)
     # revdeps <- echogithub::add_owner_repo(dt = revdeps)
     revdeps[,target_repo:=basename(target_ref)]
     #### Exclude repos ####

@@ -1,3 +1,8 @@
+# echodeps 0.99.6
+
+## Bug fixes
+* Local R CMD check fixes and compatibility updates.
+
 # echodeps 0.99.5
 
 ## New features

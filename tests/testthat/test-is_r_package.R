@@ -10,6 +10,8 @@ test_that("is_r_package works", {
         is_r_package(pkg="typooo")
     )
 
+    ## Skip GitHub-dependent test when offline
+    testthat::skip_on_cran()
     testthat::expect_error(
         is_r_package(pkg="typooo",
                      owner = "typo_man")

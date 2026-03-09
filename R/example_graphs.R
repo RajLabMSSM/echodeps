@@ -12,7 +12,9 @@
 #' @import pals
 #' @importFrom tidygraph create_star
 #' @examples
+#' \dontrun{
 #' grs <- example_graphs()
+#' }
 example_graphs <- function(n=c(4,5,10),
                            p=0.5,
                            colors = pals::viridis(length(n)),

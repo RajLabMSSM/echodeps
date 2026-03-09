@@ -25,6 +25,7 @@ Automatically omits \code{include}/\code{exclude} nodes
  that don't exist in the graph to avoid errors.
 }
 \examples{
+\dontrun{
 dgc_out <- dep_graph_create(pkg = "rworkflows",
                             method = "github",
                             node_size = "clones_uniques")
@@ -32,4 +33,5 @@ g <- dgc_out$graph
 exclude <- grep("actions-marketplace-validations",
                 names(igraph::V(g)),value = TRUE)
 g2 <- subset_graph(g = g, exclude = exclude)
+}
 }

@@ -26,7 +26,7 @@ dependencies to exclude in the graph.}
 using \link[echogithub]{github_metadata}.}
 
 \item{node_size}{Strategy for setting node sizes. Can be one of:
-\itemize{
+\describe{
 \item{NULL : }{Sets the target package node's size to 40 and the rest to 30}.
 \item{<numeric> : }{User-provided node size.
 Sets all nodes to the same size.}

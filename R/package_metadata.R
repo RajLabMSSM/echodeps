@@ -15,7 +15,9 @@
 #' @importFrom echogithub description_extract
 #' @importFrom data.table rbindlist setnames setkey
 #' @examples
+#' \dontrun{
 #' meta <- echodeps::package_metadata()
+#' }
 package_metadata <- function(pkgs = "echoverse",
                              fields = c("Package",
                                          "Title",

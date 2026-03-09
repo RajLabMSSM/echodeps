@@ -1,5 +1,6 @@
 test_that("dep_graph works", {
 
+    testthat::skip_on_cran()
     run_tests <- function(res, pkg){
         testthat::expect_true(methods::is(res$plot,"visNetwork"))
         testthat::expect_true(methods::is(res$metadata,"data.frame"))

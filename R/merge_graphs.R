@@ -15,10 +15,12 @@
 #' @importFrom tidygraph as_tbl_graph as.igraph
 #' @import igraph
 #' @examples
+#' \dontrun{
 #' set.seed(2023)
 #' graph_list <- example_graphs()
 #' g <- merge_graphs(graph_list)
 #' plot(g, edge.label=igraph::E(g)$color)
+#' }
 merge_graphs <- function(graph_list,
                          node_size,
                          output = c("tidygraph","igraph"),

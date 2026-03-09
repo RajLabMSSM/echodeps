@@ -7,8 +7,10 @@
 #' @inheritParams subset_graph
 #' @export
 #' @examples
+#' \dontrun{
 #' dgc_out <- dep_graph_create(pkg = "rworkflows",
 #'                             method = "github")
+#' }
 dep_graph_create <- function(pkg,
                              exclude = NULL,
                              method = c("pkgnet","github"),

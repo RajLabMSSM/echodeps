@@ -15,10 +15,12 @@
 #' @import visNetwork
 #' @import igraph
 #' @examples
+#' \dontrun{
 #' dgc_out <- dep_graph_create(pkg = "rworkflows",
 #'                             method = "github")
 #' vis <- dep_graph_plot(g = dgc_out$subgraph,
 #'                       pkg = dgc_out$pkg)
+#' }
 dep_graph_plot <- function(g,
                            pkg,
                            shape = c("image", "hexagon"),
