@@ -1,7 +1,7 @@
 Package: echodeps
 Type: Package
 Title: Echoverse Module: Create Package Dependency Graphs
-Version: 1.99.6
+Version: 1.0.0
 Date: 2026-03-08
 Authors@R: 
     c(person(given = "Brian",
