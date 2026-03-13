@@ -28,9 +28,9 @@ If you use `echodeps`, please cite:
 ## Installation
 
 ``` r
-if(!require("remotes")) install.packages("remotes")
+if(!require("BiocManager")) install.packages("BiocManager")
 
-remotes::install_github("RajLabMSSM/echodeps")
+BiocManager::install("RajLabMSSM/echodeps")
 library(echodeps)
 ```
 
