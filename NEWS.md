@@ -1,3 +1,10 @@
+# echodeps 1.0.0
+
+## Bug fixes
+
+* Fix Rd formatting and `\dontrun{}` example guards.
+* Add `Rplots.pdf` and `*.tbi` to `.gitignore`.
+
 # echodeps 0.99.6
 
 ## Bug fixes
