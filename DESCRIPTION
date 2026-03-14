@@ -64,6 +64,7 @@ Remotes:
     github::RajLabMSSM/catalogueR,
     github::RajLabMSSM/echofinemap,
     github::RajLabMSSM/echoverseTemplate,
+    github::RajLabMSSM/devoptera,
     github::RajLabMSSM/echolocatoR,
     github::neurogenomics/rworkflows
 RoxygenNote: 7.3.3
