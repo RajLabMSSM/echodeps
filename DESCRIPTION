@@ -41,7 +41,6 @@ Suggests:
     echofinemap,
     downloadR,
     echoverseTemplate,
-    devoptera, 
     markdown,
     rmarkdown,
     remotes,

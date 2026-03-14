@@ -11,7 +11,6 @@ echoverse_modules <- function(){
                    "downloadR",
                    "echogithub",
                    "echoverseTemplate",
-                   "devoptera",
                    "echodeps")
     return(echoverse)
 }
