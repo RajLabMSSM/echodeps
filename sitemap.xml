@@ -1,39 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/echoverseTemplate.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/is_32bit.html</loc>
-  </url>
-  <url>
-    <loc>/reference/message_parallel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/messager.html</loc>
-  </url>
-  <url>
-    <loc>/reference/source_all.html</loc>
-  </url>
-  <url>
-    <loc>/reference/stopper.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/echodeps.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/my_packages.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/add_ghpages.html</loc></url>
+<url><loc>/reference/construct_colors.html</loc></url>
+<url><loc>/reference/dep_graph.html</loc></url>
+<url><loc>/reference/dep_graph_create.html</loc></url>
+<url><loc>/reference/dep_graph_create_github.html</loc></url>
+<url><loc>/reference/dep_graph_plot.html</loc></url>
+<url><loc>/reference/example_graphs.html</loc></url>
+<url><loc>/reference/html_to_png.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/is_r_package.html</loc></url>
+<url><loc>/reference/layout_igraph.html</loc></url>
+<url><loc>/reference/layout_star.html</loc></url>
+<url><loc>/reference/merge_graphs.html</loc></url>
+<url><loc>/reference/message_parallel.html</loc></url>
+<url><loc>/reference/messager.html</loc></url>
+<url><loc>/reference/package_metadata.html</loc></url>
+<url><loc>/reference/recursive_graph_join.html</loc></url>
+<url><loc>/reference/revdep_graph_create.html</loc></url>
+<url><loc>/reference/revdep_graph_create_devtools.html</loc></url>
+<url><loc>/reference/stopper.html</loc></url>
+<url><loc>/reference/subset_graph.html</loc></url>
+<url><loc>/reference/visnet_save.html</loc></url>
 </urlset>
+
