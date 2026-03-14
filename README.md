@@ -1,18 +1,19 @@
-<img src='https://github.com/RajLabMSSM/echodeps/raw/master/inst/hex/hex.png' height='300'><br><br>
-[![R build
-status](https://github.com/RajLabMSSM/echodeps/workflows/rworkflows/badge.svg)](https://github.com/RajLabMSSM/echodeps/actions)
-[![](https://img.shields.io/github/last-commit/RajLabMSSM/echodeps.svg)](https://github.com/RajLabMSSM/echodeps/commits/master)
-[![](https://app.codecov.io/gh/RajLabMSSM/echodeps/branch/master/graph/badge.svg)](https://app.codecov.io/gh/RajLabMSSM/echodeps)
+<img src='https://github.com/RajLabMSSM/echodeps/raw/master/inst/hex/hex.png' title='Hex sticker for echodeps' height='300'><br>
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
-<h4>
-Authors: <i>Brian Schilder</i>
+[![](https://img.shields.io/badge/devel%20version-1.0.0-black.svg)](https://github.com/RajLabMSSM/echodeps)
+[![](https://img.shields.io/github/languages/code-size/RajLabMSSM/echodeps.svg)](https://github.com/RajLabMSSM/echodeps)
+[![](https://img.shields.io/github/last-commit/RajLabMSSM/echodeps.svg)](https://github.com/RajLabMSSM/echodeps/commits/master)
+<br> [![R build
+status](https://github.com/RajLabMSSM/echodeps/workflows/rworkflows/badge.svg)](https://github.com/RajLabMSSM/echodeps/actions)
+[![](https://codecov.io/gh/RajLabMSSM/echodeps/branch/master/graph/badge.svg)](https://app.codecov.io/gh/RajLabMSSM/echodeps)
+<br>
+<a href='https://app.codecov.io/gh/RajLabMSSM/echodeps/tree/master' target='_blank'><img src='https://codecov.io/gh/RajLabMSSM/echodeps/branch/master/graphs/icicle.svg' title='Codecov icicle graph' width='200' height='50' style='vertical-align: top;'></a>  
+<h4>  
+Authors: <i>Brian Schilder</i>  
 </h4>
-<h5>
-README updated: <i>Nov-12-2022</i>
-</h5>
 
-## `echodeps`: Create package dependency graphs.
+## `echodeps`: Echoverse module: Create package dependency graphs.
 
 This R package is part of the *echoverse* suite that supports
 [`echolocatoR`](https://github.com/RajLabMSSM/echolocatoR): an automated
