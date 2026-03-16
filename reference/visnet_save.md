@@ -1,0 +1,92 @@
+# visNetwork save
+
+Save a visNetwork object as a png.
+
+## Usage
+
+``` r
+visnet_save(
+  url,
+  file = gsub("\\.html", ".png", url),
+  res = 8,
+  delay = 0.2,
+  zoom = 1,
+  vwidth = 992 * res,
+  vheight = 744 * res,
+  geometry = NULL,
+  run_shrink = FALSE
+)
+```
+
+## Arguments
+
+- url:
+
+  A vector of URLs to visit. If multiple URLs are provided, it will load
+  and take screenshots of those web pages in parallel.
+
+- file:
+
+  A vector of names of output files. Should end with an image file type
+  (`.png`, `.jpg`, `.jpeg`, or `.webp`) or `.pdf`. If several
+  screenshots have to be taken and only one filename is provided, then
+  the function appends the index number of the screenshot to the file
+  name. For PDF output, it is just like printing the page to PDF in a
+  browser; `selector`, `cliprect`, `expand`, and `zoom` will not be used
+  for PDFs.
+
+- res:
+
+  Resolution multiplier.
+
+- delay:
+
+  Time to wait before taking screenshot, in seconds. Sometimes a longer
+  delay is needed for all assets to display properly.
+
+- zoom:
+
+  A number specifying the zoom factor. A zoom factor of 2 will result in
+  twice as many pixels vertically and horizontally. Note that using 2 is
+  not exactly the same as taking a screenshot on a HiDPI (Retina)
+  device: it is like increasing the zoom to 200% in a desktop browser
+  and doubling the height and width of the browser window. This differs
+  from using a HiDPI device because some web pages load different,
+  higher-resolution images when they know they will be displayed on a
+  HiDPI device (but using zoom will not report that there is a HiDPI
+  device).
+
+- vwidth, vheight:
+
+  Viewport width and height. This is the width or height of the virtual
+  browser "window". Chrome expects integer values; numeric values are
+  rounded to the nearest integer.
+
+- geometry:
+
+  Scaling specification. Can be a percent, as in `"50%"`, or pixel
+  dimensions like `"120x120"`, `"120x"`, or `"x120"`. Any valid
+  ImageMagick geometry specification can be used. If `filename` contains
+  multiple images, this can be a vector to specify distinct sizes for
+  each image.
+
+- run_shrink:
+
+  Run [shrink](https://rstudio.github.io/webshot2/reference/shrink.html)
+  on the png.
+
+## Value
+
+png file path
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+save_path <- tempfile(fileext = ".html")
+res <- dep_graph(pkg = "echoverse",
+                 layout=layout_star,
+                 save_path=save_path)
+visnet_save(url = "https://datastorm-open.github.io/visNetwork/")
+} # }
+```
