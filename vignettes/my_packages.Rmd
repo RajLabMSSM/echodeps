@@ -1,6 +1,6 @@
 ---
-title: "My packages" 
-author: "<h4>Author: <i>Brian M. Schilder</i></h4>" 
+title: "My packages"
+author: "<h4>Author: <i>Brian M. Schilder</i></h4>"
 date: "<h4>Updated: <i>`r format( Sys.Date(), '%b-%d-%Y')`</i></h4>"
 output:
   BiocStyle::html_document
@@ -21,9 +21,13 @@ library(pkg, character.only = TRUE)
 library(`r pkg`)
 ```
 
-# Create graoh
+This vignette shows how to use `echodeps` to visualise reverse
+dependencies of one of your own packages. The examples below use
+`rworkflows` as the seed package and then filter the resulting graph
+to packages published by specific GitHub organisations.
 
- 
+# Create graph
+
 ```{r, eval=FALSE}
 res <- dep_graph(pkg = "rworkflows",
                  method_seed = "github",
@@ -32,13 +36,17 @@ res <- dep_graph(pkg = "rworkflows",
 
 # Subset graph
 
+Once you have the full reverse-dependency graph you can subset it to
+only the packages you maintain. Here we keep nodes whose names
+contain known GitHub organisation prefixes.
+
 ```{r, eval=FALSE}
 mypkgs <- grep("neurogenomics/|bschilder/|RajLabMSSM/|NathanSkene/",
                names(igraph::V(res$graph)),
                value = TRUE)
 g <- res$graph |>
     tidygraph::filter(name %in% mypkgs) |>
-    dplyr::mutate(size=60)
+    dplyr::mutate(size = 60)
 ```
 
 # Plot network
@@ -49,16 +57,15 @@ plt <- echodeps::dep_graph_plot(g = g,
                                 use_basename = TRUE)
 ```
 
- 
-# Session Info 
 
-<details> 
+# Session Info
+
+<details>
 
 ```{r Session Info}
 utils::sessionInfo()
 ```
 
-</details> 
+</details>
 
 <br>
-
