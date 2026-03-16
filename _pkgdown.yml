@@ -90,6 +90,7 @@ reference:
     contents:
       - dep_graph
       - dep_graph_create
+      - dep_graph_create_github
       - dep_graph_plot
       - revdep_graph_create
   - title: Graph manipulation
